@@ -1,20 +1,13 @@
 import { useState } from 'react';
 import './App.css';
+import Router from './Router';
 
 function App() {
   const [count, setCount] = useState(0);
 
   return (
     <>
-      <h1>Vite + React</h1>
-      <div className="flex bg-slate-500">
-        <button
-          className="bg-green-500"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          count is {count}
-        </button>
-      </div>
+      <Router />
     </>
   );
 }
