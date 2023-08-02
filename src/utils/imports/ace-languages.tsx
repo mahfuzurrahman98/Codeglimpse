@@ -27,6 +27,7 @@ import 'ace-builds/src-noconflict/mode-ocaml';
 import 'ace-builds/src-noconflict/mode-pascal';
 import 'ace-builds/src-noconflict/mode-perl';
 import 'ace-builds/src-noconflict/mode-php';
+import 'ace-builds/src-noconflict/mode-php_laravel_blade';
 import 'ace-builds/src-noconflict/mode-plain_text';
 import 'ace-builds/src-noconflict/mode-powershell';
 import 'ace-builds/src-noconflict/mode-python';
