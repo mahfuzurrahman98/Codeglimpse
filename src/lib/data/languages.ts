@@ -34,6 +34,7 @@ const languages: Language[] = [
   { ext: 'pas', name: 'Pascal', mode: 'pascal' },
   { ext: 'pl', name: 'Perl', mode: 'perl' },
   { ext: 'php', name: 'PHP', mode: 'php' },
+  { ext: 'blade.php', name: 'Blade', mode: 'php_laravel_blade' },
   { ext: 'prisma', name: 'Prisma', mode: 'prisma' },
   { ext: 'txt', name: 'Plain Text', mode: 'plain_text' },
   { ext: 'ps1', name: 'PowerShell', mode: 'powershell' },
@@ -49,7 +50,7 @@ const languages: Language[] = [
   { ext: 'ts', name: 'TypeScript', mode: 'typescript' },
   { ext: 'tsx', name: 'TypeScript (TSX)', mode: 'tsx' },
   { ext: 'vbs', name: 'VBScript', mode: 'vbscript' },
-  { ext: 'vue', name: 'Vue', mode: 'vue' },
+  { ext: 'vue', name: 'Vue', mode: 'js' },
   { ext: 'xml', name: 'XML', mode: 'xml' },
   { ext: 'yaml', name: 'YAML', mode: 'yaml' },
 ];
