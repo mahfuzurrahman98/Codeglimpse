@@ -121,7 +121,7 @@ const Create = () => {
                 })
               }
             >
-              <option value="">Select a font size</option>
+              <option value="">Select visibility</option>
               <option value="1">Public</option>
               <option value="2">Private</option>
             </select>
@@ -144,7 +144,7 @@ const Create = () => {
                   pass_code: e.target.value,
                 })
               }
-              placeholder="Enter passcode"
+              placeholder="Enter a 6 digits passcode"
               className="w-full px-2 py-1 border-2 border-gray-300 rounded focus:outline-none focus:border-black"
             />
           </div>
@@ -248,6 +248,7 @@ const Create = () => {
           <input
             type="text"
             name="_tags"
+            id="_tags"
             value={formData._tags}
             onChange={(e) =>
               setFormData({
@@ -265,7 +266,7 @@ const Create = () => {
           className={`px-4 py-1 text-white rounded hover:bg-gray-600 ${
             pending ? 'bg-gray-700' : 'bg-black '
           }`}
-          disabled={pending.current}
+          disabled={pending}
         >
           {pending ? (
             <div className="flex items-center">
