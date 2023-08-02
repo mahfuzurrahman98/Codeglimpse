@@ -5,7 +5,6 @@ type Language = {
 };
 
 const languages: Language[] = [
-  { ext: 'angular', name: 'Angular', mode: 'javascript' },
   { ext: 'bat', name: 'Batch', mode: 'batchfile' },
   { ext: 'c', name: 'C', mode: 'c_cpp' },
   { ext: 'cobol', name: 'COBOL', mode: 'cobol' },
@@ -47,10 +46,9 @@ const languages: Language[] = [
   { ext: 'sh', name: 'Shell', mode: 'sh' },
   { ext: 'sql', name: 'SQL', mode: 'sql' },
   { ext: 'swift', name: 'Swift', mode: 'swift' },
-  { ext: 'tsx', name: 'TypeScript (TSX)', mode: 'tsx' },
   { ext: 'ts', name: 'TypeScript', mode: 'typescript' },
-  { ext: 'vb', name: 'Visual Basic', mode: '' },
-  { ext: 'vbnet', name: 'VB.NET', mode: '' },
+  { ext: 'tsx', name: 'TypeScript (TSX)', mode: 'tsx' },
+  { ext: 'vbs', name: 'VBScript', mode: 'vbscript' },
   { ext: 'vue', name: 'Vue', mode: 'vue' },
   { ext: 'xml', name: 'XML', mode: 'xml' },
   { ext: 'yaml', name: 'YAML', mode: 'yaml' },
