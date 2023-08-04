@@ -32,7 +32,7 @@ type formDataType = {
   _tags: string;
 };
 
-const Create = () => {
+const Edit = () => {
   const [pending, setPending] = useState<boolean>(false);
   const fontSizes: number[] = [14, 16, 18, 20, 22, 24];
   const initialFormData: formDataType = {
@@ -276,4 +276,4 @@ const Create = () => {
   );
 };
 
-export default Create;
+export default Edit;
