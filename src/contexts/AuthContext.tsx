@@ -1,4 +1,4 @@
-import { FC, ReactNode, createContext, useState } from 'react';
+import { FC, ReactNode, createContext, useEffect, useState } from 'react';
 
 type AuthContextType = {
   auth: {
@@ -23,10 +23,20 @@ export const AuthContext = createContext<AuthContextType>({
 });
 
 const AuthContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
+  useEffect(() => {
+    // let x = 0;
+    // setInterval(() => {
+    //   console.log(`Hello from setTimeout for ${x++} times`);
+    // }, 1000);
+  }, []);
+
   const [auth, setAuth] = useState({
-    name: 'Arif',
-    email: 'arifmahfuz99@gmail.com',
-    token: 'auht789522#',
+    // name: 'Arif',
+    // email: 'arifmahfuz99@gmail.com',
+    // token: 'auht789522#',
+    name: '',
+    email: '',
+    token: '',
   });
 
   const value = {

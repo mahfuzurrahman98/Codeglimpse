@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { v4 } from 'uuid';
 
 import Home from '../pages/Home';
 import Login from '../pages/Login';
@@ -27,15 +28,9 @@ const routes: RouteType[] = [
   { path: '/snippets/:id', element: <Show />, _protected: 0 },
 ];
 
-let _i = routes.length;
-const getIndex = (index: number, isProtected: boolean) => {
-  let x = index;
-  x = _i++;
-  if (isProtected) {
-    console.log('protected:', x);
-  } else {
-    console.log('no:', x);
-  }
+const getIndex = () => {
+  let x = v4();
+  // console.log(x);
   return x;
 };
 
@@ -43,11 +38,11 @@ const Router = () => {
   return (
     <BrowserRouter>
       <Routes key={Math.random()}>
-        {routes.map((route: RouteType, index: number) => {
+        {routes.map((route: RouteType) => {
           if (route._protected == -1) {
             return (
               <Route
-                key={route.path}
+                key={getIndex()}
                 path={route.path}
                 element={route.element}
               />
@@ -58,14 +53,14 @@ const Router = () => {
                 element={
                   <ProtectedRoute
                     _protected={route._protected}
-                    key={getIndex(index, false)}
+                    key={getIndex()}
                   />
                 }
               >
                 <Route
                   path={route.path}
                   element={route.element}
-                  key={route.path}
+                  key={getIndex()}
                 />
               </Route>
             );

@@ -1,11 +1,32 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import axios from '../api/axios';
 import Logo from '../assets/logo.png';
+import useAuth from '../hooks/useAuth';
 
 type Props = {};
 
 const Navbar: FC<Props> = () => {
   const [smallDevice, setSmallDevice] = useState<boolean>(false);
+  useEffect(() => setSmallDevice(true), []);
+  const { auth, setAuth } = useAuth();
+
+  const logout = () => {
+    setAuth({
+      name: '',
+      email: '',
+      token: '',
+    });
+
+    try {
+      axios.post('/logout').then((res) => {
+        console.log(res);
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <nav className="mt-5">
       <div className="flex flex-wrap items-center justify-between mx-auto">
@@ -50,37 +71,62 @@ const Navbar: FC<Props> = () => {
                 Create
               </Link>
             </li>
-            <li className="block py-3 text-gray-600 lg:p-0 lg:hidden">
-              <Link
-                to="/login"
-                className="bg-[#FFFFF] text-black border-2 border-gray-400 rounded-lg font-bold px-4 py-2 hover:bg-gray-800 hover:text-white hover:border-gray-800"
-              >
-                Login
-              </Link>
-            </li>
-            <li className="block py-4 text-gray-600  lg:p-0 lg:hidden">
-              <Link
-                to="/register"
-                className="bg-[#000] text-white rounded-lg px-4 py-3 hover:bg-gray-600"
-              >
-                Start Free Trial
-              </Link>
-            </li>
+
+            {auth.token == '' ? (
+              <>
+                <li className="block py-3 text-gray-600 lg:p-0 lg:hidden">
+                  <Link
+                    to="/login"
+                    className="bg-[#FFFFF] text-black border-2 border-gray-400 rounded-lg font-bold px-4 py-2 hover:bg-gray-800 hover:text-white hover:border-gray-800"
+                  >
+                    Login
+                  </Link>
+                </li>
+                <li className="block py-4 text-gray-600  lg:p-0 lg:hidden">
+                  <Link
+                    to="/register"
+                    className="bg-[#000] text-white rounded-lg px-4 py-3 hover:bg-gray-600"
+                  >
+                    Start Free Trial
+                  </Link>
+                </li>
+              </>
+            ) : (
+              <li className="block py-3 text-gray-600 lg:p-0 lg:hidden">
+                <button
+                  onClick={logout}
+                  className="bg-[#FFFFF] text-black border-2 border-gray-400 rounded-lg font-bold px-4 py-2 hover:bg-gray-800 hover:text-white hover:border-gray-800"
+                >
+                  Logout
+                </button>
+              </li>
+            )}
           </ul>
         </div>
         <div className="hidden lg:flex lg:gap-x-3 lg:items-center">
-          <Link
-            to="/login"
-            className="bg-[#FFFFF] text-black border-2 border-gray-400 rounded-lg font-bold px-10 py-2 hover:bg-gray-800 hover:text-white hover:border-gray-800"
-          >
-            Login
-          </Link>
-          <Link
-            to="/register"
-            className="bg-[#000] text-white font-bold border-2 border-black rounded-lg px-10 py-2 hover:bg-gray-600 hover:border-gray-600"
-          >
-            Start Free Trial
-          </Link>
+          {auth.token == '' ? (
+            <>
+              <Link
+                to="/login"
+                className="bg-[#FFFFF] text-black border-2 border-gray-400 rounded-lg font-bold px-10 py-2 hover:bg-gray-800 hover:text-white hover:border-gray-800"
+              >
+                Login
+              </Link>
+              <Link
+                to="/register"
+                className="bg-[#000] text-white font-bold border-2 border-black rounded-lg px-10 py-2 hover:bg-gray-600 hover:border-gray-600"
+              >
+                Start Free Trial
+              </Link>
+            </>
+          ) : (
+            <button
+              onClick={logout}
+              className="bg-[#FFFFF] text-black border-2 border-gray-400 rounded-lg font-bold px-10 py-2 hover:bg-gray-800 hover:text-white hover:border-gray-800"
+            >
+              Logout
+            </button>
+          )}
         </div>
       </div>
     </nav>

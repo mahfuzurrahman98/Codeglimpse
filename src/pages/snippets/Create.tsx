@@ -29,10 +29,15 @@ type formDataType = {
   theme: string;
   visibility: undefined | number;
   pass_code: undefined | string;
-  _tags: string;
+  tags: string[];
 };
 
 const Create = () => {
+  const options = [
+    { value: 'chocolate', label: 'Chocolate' },
+    { value: 'strawberry', label: 'Strawberry' },
+    { value: 'vanilla', label: 'Vanilla' },
+  ];
   const [pending, setPending] = useState<boolean>(false);
   const fontSizes: number[] = [14, 16, 18, 20, 22, 24];
   const initialFormData: formDataType = {
@@ -43,7 +48,7 @@ const Create = () => {
     theme: 'monokai',
     visibility: undefined,
     pass_code: undefined,
-    _tags: '',
+    tags: [],
   };
 
   const [formData, setFormData] = useState(initialFormData);
@@ -249,8 +254,16 @@ const Create = () => {
               <span className="ml-1 font-normal text-gray-500">optional</span>
             </label>
             <CreateableReactSelect
-              className="border-black focus:border-black"
               isMulti
+              options={options}
+              onChange={(e) => {
+                const selectedValues = e.map((option) => option.value);
+                console.log(selectedValues);
+                setFormData({
+                  ...formData,
+                  tags: selectedValues,
+                });
+              }}
             />
           </div>
 

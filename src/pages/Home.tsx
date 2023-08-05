@@ -6,8 +6,9 @@ const Home = () => {
   return (
     <div>
       <Navbar />
+      <h1>Home</h1>
       <div className="flex">
-        {auth.name} - {auth.email} - {auth.token}N Home
+        {auth.name} - {auth.email} - {auth.token}
       </div>
     </div>
   );
