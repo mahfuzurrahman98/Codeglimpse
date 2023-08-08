@@ -8,7 +8,11 @@ const Home = () => {
       <Navbar />
       <h1>Home</h1>
       <div className="flex">
-        {auth.name} - {auth.email} - {auth.token}
+        {auth.token !== '' ? (
+          <p>Hello {auth.name}, Greetings from Noobs Pastebin </p>
+        ) : (
+          <p>Greetings from Noobs Pastebin, Please Login to continue</p>
+        )}
       </div>
     </div>
   );
