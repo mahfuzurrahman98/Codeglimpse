@@ -1,15 +1,16 @@
 import { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
+import useLogout from '../hooks/useLogout';
 import useRefreshToken from '../hooks/useRefreshToken';
 
 const PersistLogin = () => {
   const [isLoading, setIsLoading] = useState(true);
   const refresh = useRefreshToken();
+  const logout = useLogout();
   const { auth } = useAuth();
 
   useEffect(() => {
-    // alert('PersistLogin.tsx');
     let isMounted = true;
 
     const verifyRefreshToken = async () => {
@@ -17,6 +18,7 @@ const PersistLogin = () => {
         await refresh();
       } catch (err) {
         console.error(err);
+        logout();
       } finally {
         isMounted && setIsLoading(false);
       }
