@@ -20,8 +20,8 @@ const routes: RouteType[] = [
   { path: '/me', element: Me, _protected: 1 },
   { path: '/library', element: Library, _protected: 1 },
   { path: '/snippets/create', element: Create, _protected: 1 },
-  { path: '/snippets/edit/:id', element: Edit, _protected: 1 },
   { path: '/snippets/:id', element: Show, _protected: 0 },
+  { path: '/snippets/edit/:id', element: Edit, _protected: 1 },
 ];
 
 export default routes;
