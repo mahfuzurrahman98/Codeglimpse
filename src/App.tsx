@@ -1,6 +1,6 @@
 import './App.css';
 import { AuthContextProvider } from './contexts/AuthContext';
-import Router from './router/Index';
+import Router from './router';
 
 const App = () => {
   return (
