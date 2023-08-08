@@ -1,27 +1,20 @@
 import { FC, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import axios from '../api/axios';
 import Logo from '../assets/logo.png';
 import useAuth from '../hooks/useAuth';
+import useLogout from '../hooks/useLogout';
 
 type Props = {};
 
 const Navbar: FC<Props> = () => {
   const [smallDevice, setSmallDevice] = useState<boolean>(false);
   useEffect(() => setSmallDevice(true), []);
-  const { auth, setAuth } = useAuth();
+  const { auth } = useAuth();
+  const _logout = useLogout();
 
-  const logout = () => {
-    setAuth({
-      name: '',
-      email: '',
-      token: '',
-    });
-
+  const logout = async () => {
     try {
-      axios.post('/logout').then((res) => {
-        console.log(res);
-      });
+      await _logout();
     } catch (err) {
       console.log(err);
     }
@@ -120,12 +113,20 @@ const Navbar: FC<Props> = () => {
               </Link>
             </>
           ) : (
-            <button
-              onClick={logout}
-              className="bg-[#FFFFF] text-black border-2 border-gray-400 rounded-lg font-bold px-10 py-2 hover:bg-gray-800 hover:text-white hover:border-gray-800"
-            >
-              Logout
-            </button>
+            <>
+              <Link
+                to="/me"
+                className="bg-[#FFFFF] text-black border-2 border-gray-400 rounded-lg font-bold px-10 py-2 hover:bg-gray-800 hover:text-white hover:border-gray-800"
+              >
+                Profile
+              </Link>
+              <button
+                onClick={logout}
+                className="bg-[#FFFFF] text-black border-2 border-gray-400 rounded-lg font-bold px-10 py-2 hover:bg-gray-800 hover:text-white hover:border-gray-800"
+              >
+                Logout
+              </button>
+            </>
           )}
         </div>
       </div>
