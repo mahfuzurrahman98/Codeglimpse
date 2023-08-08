@@ -1,10 +1,23 @@
-import axios from 'axios';
+// import axios from 'axios';
 
+// const BASE_URL = '/api/v1';
+
+// const axiosInstance = axios.create({
+//   baseURL: BASE_URL,
+//   withCredentials: true,
+// });
+
+// export default axiosInstance;
+
+import axios from 'axios';
 const BASE_URL = '/api/v1';
 
-const axiosInstance = axios.create({
+export default axios.create({
   baseURL: BASE_URL,
-  withCredentials: true,
 });
 
-export default axiosInstance;
+export const axiosPrivate = axios.create({
+  baseURL: BASE_URL,
+  headers: { 'Content-Type': 'application/json' },
+  withCredentials: true,
+});
