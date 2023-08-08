@@ -1,14 +1,19 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
-import axios from '../api/axios';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { axiosPrivate } from '../api/axios';
 import useAuth from '../hooks/useAuth';
 import RootLayout from './RootLayout';
 
 const Login = () => {
   const { setAuth } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || '/';
+
   const [formData, setFormData] = useState<{ email: string; password: string }>(
     {
-      email: '',
-      password: '',
+      email: 'mahfuz@gmail.com',
+      password: 'abc123',
     }
   );
 
@@ -20,7 +25,7 @@ const Login = () => {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      const response = await axios.post('/users/auth/login', formData, {
+      const response = await axiosPrivate.post('/users/auth/login', formData, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -33,6 +38,7 @@ const Login = () => {
         email: data.user.email,
         token: data.access_token,
       });
+      navigate(from, { replace: true });
     } catch (error) {
       console.log(error);
     }
