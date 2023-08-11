@@ -4,11 +4,13 @@ import Logo from '../assets/logo.png';
 import useAuth from '../hooks/useAuth';
 import useLogout from '../hooks/useLogout';
 
-type Props = {};
-
-const Navbar: FC<Props> = () => {
+const Navbar: FC = () => {
   const [smallDevice, setSmallDevice] = useState<boolean>(false);
-  useEffect(() => setSmallDevice(true), []);
+
+  useEffect(() => {
+    setSmallDevice(true);
+  }, []);
+
   const { auth } = useAuth();
   const _logout = useLogout();
 

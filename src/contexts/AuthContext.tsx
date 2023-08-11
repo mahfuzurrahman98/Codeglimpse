@@ -1,13 +1,6 @@
 import { FC, ReactNode, createContext, useState } from 'react';
 
-type AuthContextType = {
-  auth: {
-    name: string;
-    email: string;
-    token: string;
-  };
-  setAuth: (auth: { name: string; email: string; token: string }) => void;
-};
+import { AuthContextType } from '../types';
 
 const initialAuthState = {
   name: '',

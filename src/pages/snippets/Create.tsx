@@ -1,36 +1,23 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { Link } from 'react-router-dom';
 import CreateableReactSelect from 'react-select/creatable';
 
 import LoadingGIF from '../../assets/loading.gif';
-import languages from '../../lib/data/languages';
-import themes from '../../lib/data/themes';
 
 import AceEditor from 'react-ace';
 
 import '../../utils/imports/ace-languages';
 import '../../utils/imports/ace-themes';
 
+import 'ace-builds/src-noconflict/ace';
 import 'ace-builds/src-noconflict/ext-language_tools';
+import axios from '../../api/axios';
 import SnippetLayout from './SnippetLayout';
 
-type Language = {
-  ext: string;
-  name: string;
-  mode: string;
-};
+import { LanguageType, ThemeType, formDataType } from '../../types';
 
-type formDataType = {
-  title: string;
-  language: string;
-  source_code: string;
-  font_size: number;
-  theme: string;
-  visibility: undefined | number;
-  pass_code: undefined | string;
-  tags: string[];
-};
+// ace.config.set('basePath', '/src/utils/imports/ace-builds/src-noconflict');
 
 const Create = () => {
   const options = [
@@ -39,7 +26,11 @@ const Create = () => {
     { value: 'vanilla', label: 'Vanilla' },
   ];
   const [pending, setPending] = useState<boolean>(false);
+
   const fontSizes: number[] = [14, 16, 18, 20, 22, 24];
+  const [languages, setLanguages] = useState<LanguageType[]>([]);
+  const [themes, setThemes] = useState<ThemeType[]>([]);
+
   const initialFormData: formDataType = {
     title: '',
     language: '',
@@ -53,6 +44,24 @@ const Create = () => {
 
   const [formData, setFormData] = useState(initialFormData);
   const [mode, setMode] = useState<string>('');
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await axios.get('/data/languages');
+        setLanguages(response.data.data.languages);
+      } catch (err) {
+        console.log(err);
+      }
+
+      try {
+        const response = await axios.get('/data/themes');
+        setThemes(response.data.data.themes);
+      } catch (err) {
+        console.log(err);
+      }
+    })();
+  }, []);
 
   const handleLanguageChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const selectedOption = event.target.options[event.target.selectedIndex];
@@ -169,7 +178,7 @@ const Create = () => {
               onChange={handleLanguageChange}
             >
               <option value="">Select a language</option>
-              {languages.map((lang: Language, index: number) => (
+              {languages.map((lang: LanguageType, index: number) => (
                 <option key={index} value={lang.ext} data-mode={lang.mode}>
                   {lang.name}
                 </option>
@@ -218,18 +227,24 @@ const Create = () => {
               >
                 <option value="">Select a theme</option>
                 <optgroup label="Light">
-                  {themes.light.map((theme, index) => (
-                    <option key={index} value={theme.value}>
-                      {theme.name}
-                    </option>
-                  ))}
+                  {themes.map(
+                    (theme: ThemeType, index: number) =>
+                      !theme.is_dark && (
+                        <option key={index} value={theme.value}>
+                          {theme.name}
+                        </option>
+                      )
+                  )}
                 </optgroup>
                 <optgroup label="Dark">
-                  {themes.dark.map((theme, index) => (
-                    <option key={index} value={theme.value}>
-                      {theme.name}
-                    </option>
-                  ))}
+                  {themes.map(
+                    (theme: ThemeType, index: number) =>
+                      theme.is_dark && (
+                        <option key={index} value={theme.value}>
+                          {theme.name}
+                        </option>
+                      )
+                  )}
                 </optgroup>
               </select>
             </div>

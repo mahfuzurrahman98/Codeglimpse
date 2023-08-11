@@ -7,11 +7,7 @@ import Edit from '../pages/snippets/Edit';
 import Library from '../pages/snippets/Library';
 import Show from '../pages/snippets/Show';
 
-type RouteType = {
-  path: string;
-  element: () => JSX.Element;
-  _protected: number;
-};
+import { RouteType } from '../types';
 
 const routes: RouteType[] = [
   { path: '/', element: Home, _protected: -1 },

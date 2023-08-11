@@ -4,11 +4,7 @@ import NotFound from '../pages/NotFound';
 import ProtectedRoute from './ProtectedRoute';
 import routes from './routes';
 
-type RouteType = {
-  path: string;
-  element: () => JSX.Element;
-  _protected: number; // {-1: public, 0: shouldBeLoggedOut, 1: shouldBeLoggedIn}
-};
+import { RouteType } from '../types';
 
 const Router = () => {
   return (
