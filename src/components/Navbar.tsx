@@ -1,15 +1,15 @@
 import { FC, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import Logo from '../assets/logo.png';
+import UserIcon from '../assets/circle-user.svg';
+import CodeBranchIcon from '../assets/code-branch.svg';
+import SearchIcon from '../assets/magnifying-glass.svg';
+import PlusIcon from '../assets/plus.svg';
+import Logo from '../assets/terminal.svg';
 import useAuth from '../hooks/useAuth';
 import useLogout from '../hooks/useLogout';
 
 const Navbar: FC = () => {
-  const [smallDevice, setSmallDevice] = useState<boolean>(false);
-
-  useEffect(() => {
-    setSmallDevice(true);
-  }, []);
+  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
 
   const { auth } = useAuth();
   const _logout = useLogout();
@@ -22,114 +22,95 @@ const Navbar: FC = () => {
     }
   };
 
-  return (
-    <nav className="mt-5">
-      <div className="flex flex-wrap items-center justify-between mx-auto">
-        <Link to="/" className="flex items-center">
-          <img
-            src={Logo}
-            className="w-[50px] lg:w-[70px] mr-3"
-            alt="Bikri Logo"
-          />
-        </Link>
-        <button
-          data-collapse-toggle="navbar-default"
-          type="button"
-          onClick={() => setSmallDevice(!smallDevice)}
-          className="inline-flex items-center p-2 text-3xl text-black rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black"
-          aria-controls="navbar-default"
-          aria-expanded="false"
-        >
-          @
-        </button>
-        <div
-          className={`w-full lg:block lg:w-auto rounded mt-2 lg:mt-0 ${
-            smallDevice ? 'hidden' : ''
-          }`}
-        >
-          <ul className="flex flex-col py-4 px-3 lg:p-0 lg:flex-row lg:space-x-10  lg:border-0">
-            <li>
-              <Link
-                to="/"
-                className="block py-2 text-black font-semibold rounded lg:p-0"
-                aria-current="page"
-              >
-                Feed
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/snippets/create"
-                className="block py-2 text-black font-semibold rounded lg:p-0"
-                aria-current="page"
-              >
-                Create
-              </Link>
-            </li>
+  useEffect(() => {
+    document.addEventListener('click', () => {
+      console.log(isDropdownOpen);
+      if (isDropdownOpen) {
+        setIsDropdownOpen(false);
+      }
+    });
+  }, []);
 
-            {auth.token == '' ? (
-              <>
-                <li className="block py-3 text-gray-600 lg:p-0 lg:hidden">
-                  <Link
-                    to="/login"
-                    className="bg-[#FFFFF] text-black border-2 border-gray-400 rounded-lg font-bold px-4 py-2 hover:bg-gray-800 hover:text-white hover:border-gray-800"
-                  >
-                    Login
-                  </Link>
-                </li>
-                <li className="block py-4 text-gray-600  lg:p-0 lg:hidden">
-                  <Link
-                    to="/register"
-                    className="bg-[#000] text-white rounded-lg px-4 py-3 hover:bg-gray-600"
-                  >
-                    Start Free Trial
-                  </Link>
-                </li>
-              </>
-            ) : (
-              <li className="block py-3 text-gray-600 lg:p-0 lg:hidden">
-                <button
-                  onClick={logout}
-                  className="bg-[#FFFFF] text-black border-2 border-gray-400 rounded-lg font-bold px-4 py-2 hover:bg-gray-800 hover:text-white hover:border-gray-800"
+  return (
+    <nav className=" bg-white shadow w-full flex relative justify-between items-center mx-auto px-8 h-16 max-w-[800px]">
+      <div className="inline-flex">
+        <Link className="" to="/">
+          <div className="">
+            <img src={Logo} alt="" className="w-8" />
+          </div>
+        </Link>
+      </div>
+
+      <div className="flex mr-4 items-center">
+        <Link
+          to="/create"
+          className="flex items-center gap-x-1 py-2 px-3 hover:bg-gray-200 rounded-full"
+        >
+          <span>
+            <img src={PlusIcon} className="w-5" alt="" />
+          </span>
+          <span>New</span>
+        </Link>
+      </div>
+
+      <div className="hidden sm:block flex-shrink flex-grow-0 justify-start px-2">
+        <div className="inline-block">
+          <div className="items-center max-w-full b-red-500 relative">
+            <input
+              className="border-[3px] rounded-3xl border-black pl-4 py-1 pr-10"
+              placeholder="Start your search"
+            />
+            <img
+              src={SearchIcon}
+              className="w-5 absolute top-0 right-0 mt-2 mr-3 pointer-events-none"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="flex-initial">
+        <div className="flex justify-end items-center relative">
+          <div className="flex mr-4 items-center">
+            <Link
+              to="/library"
+              className="flex items-center gap-x-1 py-2 px-3 hover:bg-gray-200 rounded-full"
+            >
+              <span>
+                <img src={CodeBranchIcon} className="w-4" alt="" />
+              </span>
+              <span>Library</span>
+            </Link>
+          </div>
+
+          <div className="flex items-center">
+            <button
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              className="inline-flex items-center relative px-2 border rounded-full hover:shadow-lg focus:outline-none"
+            >
+              <img
+                src={UserIcon}
+                className="block flex-grow-0 flex-shrink-0 w-8 p-1"
+                alt="User Icon"
+              />
+            </button>
+
+            {isDropdownOpen && (
+              <div className="absolute right-0 mt-40 w-48 bg-white border rounded-lg shadow-lg">
+                <a
+                  href="#"
+                  className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+                >
+                  Profile
+                </a>
+                <a
+                  href="#"
+                  className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
                 >
                   Logout
-                </button>
-              </li>
+                </a>
+              </div>
             )}
-          </ul>
-        </div>
-        <div className="hidden lg:flex lg:gap-x-3 lg:items-center">
-          {auth.token == '' ? (
-            <>
-              <Link
-                to="/login"
-                className="bg-[#FFFFF] text-black border-2 border-gray-400 rounded-lg font-bold px-10 py-2 hover:bg-gray-800 hover:text-white hover:border-gray-800"
-              >
-                Login
-              </Link>
-              <Link
-                to="/register"
-                className="bg-[#000] text-white font-bold border-2 border-black rounded-lg px-10 py-2 hover:bg-gray-600 hover:border-gray-600"
-              >
-                Start Free Trial
-              </Link>
-            </>
-          ) : (
-            <>
-              <Link
-                to="/me"
-                className="bg-[#FFFFF] text-black border-2 border-gray-400 rounded-lg font-bold px-10 py-2 hover:bg-gray-800 hover:text-white hover:border-gray-800"
-              >
-                Profile
-              </Link>
-              <button
-                onClick={logout}
-                className="bg-[#FFFFF] text-black border-2 border-gray-400 rounded-lg font-bold px-10 py-2 hover:bg-gray-800 hover:text-white hover:border-gray-800"
-              >
-                Logout
-              </button>
-            </>
-          )}
+          </div>
         </div>
       </div>
     </nav>

@@ -15,9 +15,9 @@ const routes: RouteType[] = [
   { path: '/register', element: Register, _protected: 0 },
   { path: '/me', element: Me, _protected: 1 },
   { path: '/library', element: Library, _protected: 1 },
-  { path: '/snippets/create', element: Create, _protected: 1 },
-  { path: '/snippets/:id', element: Show, _protected: 0 },
-  { path: '/snippets/edit/:id', element: Edit, _protected: 1 },
+  { path: '/create', element: Create, _protected: 1 },
+  { path: '/:id', element: Show, _protected: 0 },
+  { path: '/edit/:id', element: Edit, _protected: 1 },
 ];
 
 export default routes;

@@ -10,14 +10,13 @@ import AceEditor from 'react-ace';
 import '../../utils/imports/ace-languages';
 import '../../utils/imports/ace-themes';
 
-import 'ace-builds/src-noconflict/ace';
 import 'ace-builds/src-noconflict/ext-language_tools';
+import 'ace-builds/src-noconflict/ext-modelist';
+
 import axios from '../../api/axios';
 import SnippetLayout from './SnippetLayout';
 
 import { LanguageType, ThemeType, formDataType } from '../../types';
-
-// ace.config.set('basePath', '/src/utils/imports/ace-builds/src-noconflict');
 
 const Create = () => {
   const options = [
@@ -33,7 +32,7 @@ const Create = () => {
 
   const initialFormData: formDataType = {
     title: '',
-    language: '',
+    language: 'c_cpp',
     source_code: '',
     font_size: 18,
     theme: 'monokai',
@@ -162,6 +161,8 @@ const Create = () => {
                   })
                 }
                 placeholder="Enter a 6 digits passcode"
+                minLength={6}
+                maxLength={6}
                 className="w-full px-2 py-1 border-2 border-gray-300 rounded focus:outline-none focus:border-black"
               />
             </div>

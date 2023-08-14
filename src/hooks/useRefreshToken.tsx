@@ -7,7 +7,6 @@ const useRefreshToken = () => {
   const refresh = async () => {
     try {
       const response = await axiosPrivate.post('/users/auth/refreshtoken');
-      console.log(response);
       const data = response.data.data;
 
       setAuth({
