@@ -14,10 +14,10 @@ const routes: RouteType[] = [
   { path: '/login', element: Login, _protected: 0 },
   { path: '/register', element: Register, _protected: 0 },
   { path: '/me', element: Me, _protected: 1 },
-  { path: '/library', element: Library, _protected: 1 },
-  { path: '/create', element: Create, _protected: 1 },
-  { path: '/:id', element: Show, _protected: 0 },
-  { path: '/edit/:id', element: Edit, _protected: 1 },
+  { path: '/p/library', element: Library, _protected: 1 },
+  { path: '/p/new', element: Create, _protected: 1 },
+  { path: '/p/:id', element: Show, _protected: 0 },
+  { path: '/p/:id/edit', element: Edit, _protected: 1 },
 ];
 
 export default routes;
