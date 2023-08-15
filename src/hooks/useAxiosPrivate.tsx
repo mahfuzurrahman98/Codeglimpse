@@ -49,6 +49,8 @@ const useAxiosPrivate = () => {
       axiosPrivate.interceptors.response.eject(responseInterceptor);
     };
   }, [auth.token, refreshToken]);
+
+  return axiosPrivate;
 };
 
 export default useAxiosPrivate;
