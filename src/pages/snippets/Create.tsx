@@ -14,6 +14,7 @@ import 'ace-builds/src-noconflict/ext-language_tools';
 import 'ace-builds/src-noconflict/ext-modelist';
 
 import axios from '../../api/axios';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import SnippetLayout from './SnippetLayout';
 
 import { LanguageType, ThemeType, formDataType } from '../../types';
@@ -32,7 +33,7 @@ const Create = () => {
 
   const initialFormData: formDataType = {
     title: '',
-    language: 'c_cpp',
+    language: undefined,
     source_code: '',
     font_size: 18,
     theme: 'monokai',
@@ -48,6 +49,7 @@ const Create = () => {
     (async () => {
       try {
         const response = await axios.get('/data/languages');
+        // console.log(response.data.data.languages);
         setLanguages(response.data.data.languages);
       } catch (err) {
         console.log(err);
@@ -62,17 +64,44 @@ const Create = () => {
     })();
   }, []);
 
-  const handleLanguageChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    const selectedOption = event.target.options[event.target.selectedIndex];
-    const selectedMode = selectedOption.getAttribute('data-mode');
-    if (selectedMode) {
-      setMode(selectedMode);
+  useEffect(() => {
+    if (formData.language !== undefined) {
+      const selectedLanguage = languages.find(
+        (lang) => lang.ext === formData.language
+      ) as LanguageType;
+      setMode(selectedLanguage.mode);
+    }
+    console.log(mode);
+  }, [formData.language]);
+
+  const handleTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    // set it with function with prevState
+    setFormData((prevState) => ({
+      ...prevState,
+      title: event.target.value,
+    }));
+    console.log(formData);
+  };
+
+  const axiosPrivate = useAxiosPrivate();
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // setPending(true);
+
+    console.log(formData);
+
+    try {
+      const response = axiosPrivate.post('/snippets', formData);
+      console.log(response);
+      // to
+    } catch (err) {
+      console.log(err);
     }
   };
 
   return (
     <SnippetLayout>
-      <div className="mx-auto py-7 px-5 max-w-5xl">
+      <div className="mx-auto py-7 px-3 lg:px-0 max-w-5xl">
         <div className="flex justify-between items-start mb-5 border-b-4 border-gray-700">
           <h1 className="text-2xl md:text-3xl font-bold mb-4">
             Create a Snippet
@@ -99,7 +128,7 @@ const Create = () => {
           }}
         />
 
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 md:grid-cols-2 md:gap-x-5">
             <div className="mb-4">
               <label htmlFor="title" className="block mb-1 font-semibold">
@@ -111,13 +140,15 @@ const Create = () => {
                 id="title"
                 value={formData.title}
                 onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    title: e.target.value,
-                  })
+                  // setFormData({
+                  //   ...formData,
+                  //   title: e.target.value,
+                  // })
+                  handleTitleChange(e)
                 }
                 placeholder="Enter title"
                 className="w-full px-2 py-1 border-2 border-gray-300 rounded focus:outline-none focus:border-black"
+                required
               />
             </div>
 
@@ -130,6 +161,7 @@ const Create = () => {
                 id="visibility"
                 className="w-full px-2 py-[6px] border-2 bg-white border-gray-300 rounded focus:outline-none focus:border-black"
                 value={formData.visibility}
+                required
                 onChange={(e) =>
                   setFormData({
                     ...formData,
@@ -164,6 +196,7 @@ const Create = () => {
                 minLength={6}
                 maxLength={6}
                 className="w-full px-2 py-1 border-2 border-gray-300 rounded focus:outline-none focus:border-black"
+                required
               />
             </div>
           )}
@@ -176,7 +209,14 @@ const Create = () => {
               name="language"
               id="language"
               className="w-full px-2 py-[6px] border-2 bg-white border-gray-300 rounded focus:outline-none focus:border-black"
-              onChange={handleLanguageChange}
+              value={formData.language}
+              onChange={(e) => {
+                setFormData({
+                  ...formData,
+                  language: e.target.value,
+                });
+              }}
+              required
             >
               <option value="">Select a language</option>
               {languages.map((lang: LanguageType, index: number) => (
@@ -197,6 +237,7 @@ const Create = () => {
                 id="font_size"
                 className="w-full px-2 py-[6px] border-2 bg-white border-gray-300 rounded focus:outline-none focus:border-black"
                 value={formData.font_size}
+                required
                 onChange={(e) =>
                   setFormData({
                     ...formData,
@@ -222,6 +263,7 @@ const Create = () => {
                 id="theme"
                 className="w-full px-2 py-[6px] border-2 bg-white border-gray-300 rounded focus:outline-none focus:border-black"
                 value={formData.theme}
+                required
                 onChange={(e) =>
                   setFormData({ ...formData, theme: e.target.value })
                 }
@@ -261,6 +303,12 @@ const Create = () => {
               width="100%"
               height="800px"
               fontSize={formData.font_size}
+              onChange={(value) =>
+                setFormData({
+                  ...formData,
+                  source_code: value,
+                })
+              }
             />
           </div>
 
