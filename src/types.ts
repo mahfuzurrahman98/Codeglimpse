@@ -12,7 +12,7 @@ export type ThemeType = {
 
 export type formDataType = {
   title: string;
-  language: string;
+  language: string | undefined;
   source_code: string;
   font_size: number;
   theme: string;
@@ -35,3 +35,9 @@ export type RouteType = {
   element: () => JSX.Element;
   _protected: number; // {-1: public, 0: shouldBeLoggedOut, 1: shouldBeLoggedIn}
 };
+
+export type SnippetType = {
+  uid: string;
+  owner: string;
+  created_at: string;
+} & formDataType;
