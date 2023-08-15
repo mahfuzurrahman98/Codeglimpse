@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import { Link } from 'react-router-dom';
 import UserIcon from '../assets/circle-user.svg';
 import CodeBranchIcon from '../assets/code-branch.svg';
@@ -22,18 +22,9 @@ const Navbar: FC = () => {
     }
   };
 
-  useEffect(() => {
-    document.addEventListener('click', () => {
-      console.log(isDropdownOpen);
-      if (isDropdownOpen) {
-        setIsDropdownOpen(false);
-      }
-    });
-  }, []);
-
   return (
-    <div className="bg-white shadow">
-      <nav className="w-full flex justify-between items-center mx-auto px-8 h-16 max-w-5xl">
+    <div className="bg-white shadow px-3 lg:px-0">
+      <nav className="w-full flex justify-between items-center mx-auto h-16 max-w-5xl">
         <div className="">
           <Link className="" to="/">
             <div className="">
@@ -54,34 +45,32 @@ const Navbar: FC = () => {
           </Link>
         </div>
 
-        <div className="hidden sm:block flex-shrink flex-grow-0 justify-start px-2">
-          <div className="inline-block">
-            <div className="items-center max-w-full b-red-500 relative">
-              <input
-                className="border-[3px] rounded-3xl border-black pl-4 py-1 pr-10"
-                placeholder="Start your search"
-              />
-              <img
-                src={SearchIcon}
-                className="w-5 absolute top-0 right-0 mt-2 mr-3 pointer-events-none"
-              />
-            </div>
+        <div className="flex mr-4 items-center">
+          <Link
+            to="/p/library"
+            className="flex items-center gap-x-1 py-2 px-3 hover:bg-gray-200 rounded-full"
+          >
+            <span>
+              <img src={CodeBranchIcon} className="w-4" alt="" />
+            </span>
+            <span>Library</span>
+          </Link>
+        </div>
+
+        <div className="hidden md:block flex-shrink flex-grow-0 justify-start px-2">
+          <div className="items-center max-w-full b-red-500 relative">
+            <input
+              className="border-2 rounded-2xl border-black pl-4 py-1 pr-10"
+              placeholder="Search snippets by title, or tags"
+            />
+            <img
+              src={SearchIcon}
+              className="w-5 absolute top-0 right-0 mt-2 mr-3 pointer-events-none"
+            />
           </div>
         </div>
 
         <div className="flex justify-end items-center relative">
-          <div className="flex mr-4 items-center">
-            <Link
-              to="/p/library"
-              className="flex items-center gap-x-1 py-2 px-3 hover:bg-gray-200 rounded-full"
-            >
-              <span>
-                <img src={CodeBranchIcon} className="w-4" alt="" />
-              </span>
-              <span>Library</span>
-            </Link>
-          </div>
-
           <div className="flex items-center">
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -105,7 +94,7 @@ const Navbar: FC = () => {
                 <a
                   href="#"
                   className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
-                  onClick={() => _logout()}
+                  onClick={() => logout()}
                 >
                   Logout
                 </a>
