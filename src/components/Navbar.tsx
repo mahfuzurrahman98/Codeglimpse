@@ -69,39 +69,53 @@ const Navbar: FC = () => {
             />
           </div>
         </div>
+        {auth.token != '' ? (
+          <div className="flex justify-end items-center relative">
+            <div className="flex items-center">
+              <button
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                className="inline-flex items-center relative px-2 border rounded-full hover:shadow-lg focus:outline-none"
+              >
+                <img
+                  src={UserIcon}
+                  className="block flex-grow-0 flex-shrink-0 w-8 p-1"
+                  alt="User Icon"
+                />
+              </button>
 
-        <div className="flex justify-end items-center relative">
-          <div className="flex items-center">
-            <button
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="inline-flex items-center relative px-2 border rounded-full hover:shadow-lg focus:outline-none"
-            >
-              <img
-                src={UserIcon}
-                className="block flex-grow-0 flex-shrink-0 w-8 p-1"
-                alt="User Icon"
-              />
-            </button>
-
-            {isDropdownOpen && (
-              <div className="absolute right-0 mt-40 w-48 bg-white border rounded-lg shadow-lg">
-                <Link
-                  to="/me"
-                  className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
-                >
-                  Profile
-                </Link>
-                <a
-                  href="#"
-                  className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
-                  onClick={() => logout()}
-                >
-                  Logout
-                </a>
-              </div>
-            )}
+              {isDropdownOpen && (
+                <div className="absolute right-0 mt-40 w-48 bg-white border rounded-lg shadow-lg">
+                  <Link
+                    to="/me"
+                    className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+                  >
+                    Profile
+                  </Link>
+                  <a
+                    href="#"
+                    className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+                    onClick={() => logout()}
+                  >
+                    Logout
+                  </a>
+                </div>
+              )}
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="flex justify-end items-center relative">
+            <div className="flex items-center">
+              <Link
+                to="/login"
+                className="inline-flex items-center relative px-2 border rounded-full hover:shadow-lg focus:outline-none"
+              >
+                <span className="block flex-grow-0 flex-shrink-0 w-8 p-1">
+                  Login
+                </span>
+              </Link>
+            </div>
+          </div>
+        )}
       </nav>
     </div>
   );
