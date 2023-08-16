@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import axios from '../api/axios';
 import UserIcon from '../assets/circle-user.svg';
 import SearchIcon from '../assets/magnifying-glass.svg';
-import useAuth from '../hooks/useAuth';
+// import useAuth from '../hooks/useAuth';
 import { LanguageType, SnippetType } from '../types';
 import RootLayout from './RootLayout';
 
@@ -76,7 +76,7 @@ export const Snippet = ({
 };
 
 const Home = () => {
-  const { auth } = useAuth();
+  // const { auth } = useAuth();
   const [snippets, setSnippets] = useState<SnippetType[]>([]);
   const [languages, setLanguages] = useState<LanguageType[]>([]);
 
