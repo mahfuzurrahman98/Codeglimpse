@@ -1,8 +1,8 @@
 {
   "rewrites": [
     {
-      "source": "/api/:path*",
-      "destination": "https://api.example.com/:path*"
+      "source": "/api/v1/:path*",
+      "destination": "https://pastebin-api.vercel.app/:path*"
     }
   ]
 }
