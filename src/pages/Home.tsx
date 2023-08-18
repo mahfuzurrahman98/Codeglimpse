@@ -57,19 +57,24 @@ export const Snippet = ({
             ))}
           </div>
         </div>
-        <Link to={`/p/${snippet.uid}`} className="cursor-pointer">
-          <AceEditor
-            className="cursor-pointer"
-            mode={mode}
-            theme={snippet.theme}
-            width="100%"
-            height="170px"
-            fontSize={18}
-            value={snippet.source_code + '.....'}
-            readOnly={true}
-            highlightActiveLine={false}
-          />
-        </Link>
+        <AceEditor
+          mode={mode}
+          theme={snippet.theme}
+          width="100%"
+          height="170px"
+          fontSize={18}
+          value={snippet.source_code + '.....\n'}
+          readOnly={true}
+          highlightActiveLine={false}
+        />
+        <div className="text-right pr-2">
+          <Link
+            to={`/p/${snippet.uid}`}
+            className="text-blue-600 underline text-right"
+          >
+            show more
+          </Link>
+        </div>
       </div>
     </div>
   );
@@ -90,7 +95,7 @@ const Home = () => {
       const limit = searchParams.get('limit') || '10';
 
       const response = await axios.get(
-        `/snippets/public?q=${q}&page=${page}&limit=${limit}`
+        `/snippets/?q=${q}&page=${page}&limit=${limit}`
       );
       setSnippets(response.data.data.snippets);
     } catch (error) {
