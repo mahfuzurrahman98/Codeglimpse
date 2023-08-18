@@ -76,7 +76,7 @@ const Navbar: FC = () => {
               </button>
 
               {isDropdownOpen && (
-                <div className="absolute right-0 mt-40 w-48 bg-white border rounded-lg shadow-lg">
+                <div className="absolute right-0 mt-40 w-48 bg-white border rounded-lg shadow-lg z-10">
                   <Link
                     to="/me"
                     className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
