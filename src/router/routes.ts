@@ -16,7 +16,7 @@ const routes: RouteType[] = [
   { path: '/me', element: Me, _protected: 1 },
   { path: '/p/library', element: Library, _protected: 1 },
   { path: '/p/new', element: Create, _protected: 1 },
-  { path: '/p/:id', element: Show, _protected: 0 },
+  { path: '/p/:id', element: Show, _protected: -1 },
   { path: '/p/:id/edit', element: Edit, _protected: 1 },
 ];
 
