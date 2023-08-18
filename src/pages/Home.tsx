@@ -65,7 +65,7 @@ export const Snippet = ({
             width="100%"
             height="170px"
             fontSize={18}
-            value={snippet.source_code.substring(0, 200) + '.....'}
+            value={snippet.source_code + '.....'}
             readOnly={true}
             highlightActiveLine={false}
           />
