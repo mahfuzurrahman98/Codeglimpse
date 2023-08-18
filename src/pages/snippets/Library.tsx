@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import axios from '../../api/axios';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 // import useAuth from '../../hooks/useAuth';
-import { LanguageType, SnippetType } from '../../types';
+import { SnippetType } from '../../types';
 import RootLayout from '../RootLayout';
 
 import '../../utils/imports/ace-languages';
@@ -15,7 +14,6 @@ import 'ace-builds/src-noconflict/ext-modelist';
 const Home = () => {
   // const { auth } = useAuth();
   const [snippets, setSnippets] = useState<SnippetType[]>([]);
-  const [languages, setLanguages] = useState<LanguageType[]>([]);
   const [searchParams] = useSearchParams();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -44,13 +42,6 @@ const Home = () => {
     } catch (error) {
       setSnippets([]);
       console.log(error);
-    }
-
-    try {
-      const response = await axios.get('/data/languages');
-      setLanguages(response.data.data.languages);
-    } catch (err) {
-      console.log(err);
     }
   };
 
