@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import AceEditor from 'react-ace';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import axios from '../api/axios';
 import UserIcon from '../assets/circle-user.svg';
-import SearchIcon from '../assets/magnifying-glass.svg';
 // import useAuth from '../hooks/useAuth';
 import { LanguageType, SnippetType } from '../types';
 import RootLayout from './RootLayout';
@@ -13,6 +12,7 @@ import '../utils/imports/ace-themes';
 
 import 'ace-builds/src-noconflict/ext-language_tools';
 import 'ace-builds/src-noconflict/ext-modelist';
+import SearchBox from '../components/SearchBox';
 
 export const Snippet = ({
   snippet,
@@ -79,40 +79,48 @@ const Home = () => {
   // const { auth } = useAuth();
   const [snippets, setSnippets] = useState<SnippetType[]>([]);
   const [languages, setLanguages] = useState<LanguageType[]>([]);
+  const [searchParams] = useSearchParams();
+
+  // if search params change set snippets to new data
+
+  const getAllPublicSnippets = async () => {
+    try {
+      const q = searchParams.get('q') || '';
+      const page = searchParams.get('page') || '1';
+      const limit = searchParams.get('limit') || '10';
+
+      const response = await axios.get(
+        `/snippets/public?q=${q}&page=${page}&limit=${limit}`
+      );
+      setSnippets(response.data.data.snippets);
+    } catch (error) {
+      setSnippets([]);
+      console.log(error);
+    }
+
+    try {
+      const response = await axios.get('/data/languages');
+      setLanguages(response.data.data.languages);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
-    (async () => {
-      try {
-        const response = await axios.get('/snippets/public');
-        setSnippets(response.data.data.snippets);
-      } catch (error) {
-        console.log(error);
-      }
+    getAllPublicSnippets();
+  }, [searchParams]);
 
-      try {
-        const response = await axios.get('/data/languages');
-        setLanguages(response.data.data.languages);
-      } catch (err) {
-        console.log(err);
-      }
-    })();
+  useEffect(() => {
+    getAllPublicSnippets();
   }, []);
 
   return (
     <RootLayout>
       <div className="max-w-4xl mx-auto mt-5 flex flex-col gap-y-5 px-3 lg:px-0">
         <div className="block md:hidden flex-shrink flex-grow-0 justify-start">
-          <div className="items-center w-full b-red-500 relative">
-            <input
-              className="border-2 rounded-2xl border-black pl-4 py-1 pr-10 w-full"
-              placeholder="Search snippets by title, or tags"
-            />
-            <img
-              src={SearchIcon}
-              className="w-5 absolute top-0 right-0 mt-2 mr-3 pointer-events-none"
-            />
-          </div>
+          <SearchBox />
         </div>
+
         {snippets.slice(0, 3).map((snippet: SnippetType, index: number) => (
           <Snippet
             snippet={snippet}
