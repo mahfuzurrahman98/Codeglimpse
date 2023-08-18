@@ -103,10 +103,6 @@ const Home = () => {
     getAllPublicSnippets();
   }, [searchParams]);
 
-  useEffect(() => {
-    getAllPublicSnippets();
-  }, []);
-
   return (
     <RootLayout>
       <div className="max-w-4xl mx-auto mt-5 flex flex-col gap-y-5 px-3 lg:px-0">
