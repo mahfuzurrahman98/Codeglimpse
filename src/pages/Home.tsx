@@ -4,7 +4,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import axios from '../api/axios';
 import UserIcon from '../assets/circle-user.svg';
 // import useAuth from '../hooks/useAuth';
-import { LanguageType, SnippetType } from '../types';
+import { SnippetType } from '../types';
 import RootLayout from './RootLayout';
 
 import '../utils/imports/ace-languages';
@@ -14,13 +14,9 @@ import 'ace-builds/src-noconflict/ext-language_tools';
 import 'ace-builds/src-noconflict/ext-modelist';
 import SearchBox from '../components/SearchBox';
 
-export const Snippet = ({
-  snippet,
-  mode,
-}: {
-  snippet: SnippetType;
-  mode: string;
-}) => {
+type _SnippetType = SnippetType & { mode: string };
+
+export const Snippet = ({ snippet }: { snippet: _SnippetType }) => {
   return (
     <div className="bg-gray-200 shadow p-3 rounded-xl">
       <h3 className="text-xl font-medium">{snippet.title}</h3>
@@ -58,7 +54,7 @@ export const Snippet = ({
           </div>
         </div>
         <AceEditor
-          mode={mode}
+          mode={snippet.mode}
           theme={snippet.theme}
           width="100%"
           height="170px"
@@ -82,8 +78,7 @@ export const Snippet = ({
 
 const Home = () => {
   // const { auth } = useAuth();
-  const [snippets, setSnippets] = useState<SnippetType[]>([]);
-  const [languages, setLanguages] = useState<LanguageType[]>([]);
+  const [snippets, setSnippets] = useState<_SnippetType[]>([]);
   const [searchParams] = useSearchParams();
 
   // if search params change set snippets to new data
@@ -102,13 +97,6 @@ const Home = () => {
       setSnippets([]);
       console.log(error);
     }
-
-    try {
-      const response = await axios.get('/data/languages');
-      setLanguages(response.data.data.languages);
-    } catch (err) {
-      console.log(err);
-    }
   };
 
   useEffect(() => {
@@ -126,15 +114,8 @@ const Home = () => {
           <SearchBox />
         </div>
 
-        {snippets.slice(0, 3).map((snippet: SnippetType, index: number) => (
-          <Snippet
-            snippet={snippet}
-            mode={
-              languages.find((language) => language.name === snippet.language)
-                ?.mode as string
-            }
-            key={index}
-          />
+        {snippets.map((snippet: _SnippetType, index: number) => (
+          <Snippet snippet={snippet} key={index} />
         ))}
       </div>
     </RootLayout>
