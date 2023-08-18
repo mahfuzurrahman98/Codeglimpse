@@ -2,11 +2,11 @@ import { FC, useState } from 'react';
 import { Link } from 'react-router-dom';
 import UserIcon from '../assets/circle-user.svg';
 import CodeBranchIcon from '../assets/code-branch.svg';
-import SearchIcon from '../assets/magnifying-glass.svg';
 import PlusIcon from '../assets/plus.svg';
 import Logo from '../assets/terminal.svg';
 import useAuth from '../hooks/useAuth';
 import useLogout from '../hooks/useLogout';
+import SearchBox from './SearchBox';
 
 const Navbar: FC = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
@@ -58,17 +58,9 @@ const Navbar: FC = () => {
         </div>
 
         <div className="hidden md:block flex-shrink flex-grow-0 justify-start px-2">
-          <div className="items-center max-w-full b-red-500 relative">
-            <input
-              className="border-2 rounded-2xl border-black pl-4 py-1 pr-10"
-              placeholder="Search snippets by title, or tags"
-            />
-            <img
-              src={SearchIcon}
-              className="w-5 absolute top-0 right-0 mt-2 mr-3 pointer-events-none"
-            />
-          </div>
+          <SearchBox />
         </div>
+
         {auth.token != '' ? (
           <div className="flex justify-end items-center relative">
             <div className="flex items-center">
