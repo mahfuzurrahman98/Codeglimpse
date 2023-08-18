@@ -36,9 +36,9 @@ export const Snippet = ({ snippet }: { snippet: _SnippetType }) => {
         </div>
       </div>
 
-      <div className="bg-white mt-3">
-        <div className="flex flex-wrap justify-between items-center p-1">
-          <p className="text-md rounded-md text-black font-medium px-2">
+      <div className="mt-3">
+        <div className="bg-gray-600 flex flex-wrap justify-between items-center p-1">
+          <p className="text-md text-white rounded-md font-medium px-2">
             {snippet.language}
           </p>
 
@@ -54,6 +54,7 @@ export const Snippet = ({ snippet }: { snippet: _SnippetType }) => {
           </div>
         </div>
         <AceEditor
+          className="font-fira-code"
           mode={snippet.mode}
           theme={snippet.theme}
           width="100%"
