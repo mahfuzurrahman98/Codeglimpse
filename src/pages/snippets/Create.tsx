@@ -26,8 +26,6 @@ const Create = () => {
     { value: 'vanilla', label: 'Vanilla' },
   ];
   const [pending, setPending] = useState<boolean>(false);
-
-  const fontSizes: number[] = [14, 16, 18, 20, 22, 24];
   const [languages, setLanguages] = useState<LanguageType[]>([]);
   const [themes, setThemes] = useState<ThemeType[]>([]);
 
@@ -35,7 +33,6 @@ const Create = () => {
     title: '',
     language: undefined,
     source_code: '',
-    font_size: 18,
     theme: 'monokai',
     visibility: undefined,
     pass_code: undefined,
@@ -201,59 +198,7 @@ const Create = () => {
             </div>
           )}
 
-          <div className="mb-4">
-            <label htmlFor="language" className="block mb-1 font-semibold">
-              Language
-            </label>
-            <select
-              name="language"
-              id="language"
-              className="w-full px-2 py-[6px] border-2 bg-white border-gray-300 rounded focus:outline-none focus:border-black"
-              value={formData.language}
-              onChange={(e) => {
-                setFormData({
-                  ...formData,
-                  language: e.target.value,
-                });
-              }}
-              required
-            >
-              <option value="">Select a language</option>
-              {languages.map((lang: LanguageType, index: number) => (
-                <option key={index} value={lang.ext} data-mode={lang.mode}>
-                  {lang.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
           <div className="grid grid-cols-1 md:grid-cols-2 md:gap-x-5">
-            <div className="mb-4">
-              <label htmlFor="font_size" className="block mb-1 font-semibold">
-                Font Size
-              </label>
-              <select
-                name="font_size"
-                id="font_size"
-                className="w-full px-2 py-[6px] border-2 bg-white border-gray-300 rounded focus:outline-none focus:border-black"
-                value={formData.font_size}
-                required
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    font_size: parseInt(e.target.value),
-                  })
-                }
-              >
-                <option value="">Select a font size</option>
-                {fontSizes.map((size, index) => (
-                  <option key={index} value={size}>
-                    {size}
-                  </option>
-                ))}
-              </select>
-            </div>
-
             <div className="mb-4">
               <label htmlFor="theme" className="block mb-1 font-semibold">
                 Theme
@@ -291,6 +236,31 @@ const Create = () => {
                 </optgroup>
               </select>
             </div>
+            <div className="mb-4">
+              <label htmlFor="language" className="block mb-1 font-semibold">
+                Language
+              </label>
+              <select
+                name="language"
+                id="language"
+                className="w-full px-2 py-[6px] border-2 bg-white border-gray-300 rounded focus:outline-none focus:border-black"
+                value={formData.language}
+                onChange={(e) => {
+                  setFormData({
+                    ...formData,
+                    language: e.target.value,
+                  });
+                }}
+                required
+              >
+                <option value="">Select a language</option>
+                {languages.map((lang: LanguageType, index: number) => (
+                  <option key={index} value={lang.ext} data-mode={lang.mode}>
+                    {lang.name}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
 
           <div className="mb-4">
@@ -300,9 +270,9 @@ const Create = () => {
             <AceEditor
               mode={mode}
               theme={formData.theme}
+              fontSize={18}
               width="100%"
               height="800px"
-              fontSize={formData.font_size}
               onChange={(value) =>
                 setFormData({
                   ...formData,

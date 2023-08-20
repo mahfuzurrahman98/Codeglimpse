@@ -14,7 +14,6 @@ export type formDataType = {
   title: string;
   language: string | undefined;
   source_code: string;
-  font_size: number;
   theme: string;
   visibility: undefined | number;
   pass_code: undefined | string;
