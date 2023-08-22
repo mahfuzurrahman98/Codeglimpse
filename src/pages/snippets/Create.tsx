@@ -17,14 +17,15 @@ import axios from '../../api/axios';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import SnippetLayout from './SnippetLayout';
 
+import tags from '../../lib/data/tags';
 import { LanguageType, ThemeType, formDataType } from '../../types';
 
 const Create = () => {
-  const options = [
-    { value: 'chocolate', label: 'Chocolate' },
-    { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' },
-  ];
+  const options: { value: string; label: string }[] = [];
+  tags.forEach((tag: string) => {
+    options.push({ value: tag, label: tag });
+  });
+
   const [pending, setPending] = useState<boolean>(false);
   const [languages, setLanguages] = useState<LanguageType[]>([]);
   const [themes, setThemes] = useState<ThemeType[]>([]);
@@ -268,6 +269,7 @@ const Create = () => {
               Source Code
             </label>
             <AceEditor
+              className="font-fira-code"
               mode={mode}
               theme={formData.theme}
               fontSize={18}
