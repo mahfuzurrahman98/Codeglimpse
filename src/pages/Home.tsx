@@ -107,7 +107,7 @@ const Home = () => {
 
   return (
     <RootLayout>
-      <div className="max-w-4xl mx-auto mt-5 flex flex-col gap-y-5 px-3 lg:px-0">
+      <div className="max-w-4xl w-full mt-5 flex flex-col mx-auto gap-y-5 px-3 lg:px-0">
         <div className="block md:hidden flex-shrink flex-grow-0 justify-start">
           <SearchBox />
         </div>
