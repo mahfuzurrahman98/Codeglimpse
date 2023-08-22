@@ -8,14 +8,18 @@ const SearchBox = () => {
   const [param, setParam] = useState<string>(searchParams.get('q') || '');
 
   useEffect(() => {
-    alert(searchParams.get('q'));
+    setParam(searchParams.get('q') || '');
+  }, [searchParams]);
+
+  useEffect(() => {
+    setParam(searchParams.get('q') || '');
   }, []);
 
   const handleSearch = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const q = param.trim() || '';
-    const page = searchParams.get('page') || '1 ';
+    const page = searchParams.get('page') || '1';
     const limit = searchParams.get('limit') || '10';
 
     navigate(`/?q=${q}&page=${page}&limit=${limit}`, { replace: true });
