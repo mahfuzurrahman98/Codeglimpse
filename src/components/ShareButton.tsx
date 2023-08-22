@@ -23,7 +23,7 @@ const ShareButton = ({ uid }: { uid: string }) => {
         className="rounded-md py-1 bg-white flex gap-x-1 items-center px-1"
         onClick={() => {
           navigator.clipboard.writeText(
-            'https://snippeter.vercel.app/p/' + uid
+            'https://codeglimpse.vercel.app/p/' + uid
           );
           toast.success('Share link copied to clipboard!');
         }}
