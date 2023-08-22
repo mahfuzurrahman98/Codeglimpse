@@ -2,6 +2,7 @@ import { FC, useState } from 'react';
 import { Link } from 'react-router-dom';
 import UserIcon from '../assets/circle-user.svg';
 import CodeBranchIcon from '../assets/code-branch.svg';
+import GoogleIcon from '../assets/google.svg';
 import PlusIcon from '../assets/plus.svg';
 import Logo from '../assets/terminal.svg';
 import useAuth from '../hooks/useAuth';
@@ -13,6 +14,17 @@ const Navbar: FC = () => {
 
   const { auth } = useAuth();
   const _logout = useLogout();
+
+  const _login = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    const googleAuthUrl = `https://accounts.google.com/o/oauth2/auth?client_id=${
+      import.meta.env.VITE_GOOGLE_CLIENT_ID
+    }&redirect_uri=${
+      import.meta.env.VITE_GOOGLE_REDIRECT_LOGIN_URI
+    }&response_type=code&scope=openid%20profile%20email`;
+    console.log(googleAuthUrl);
+    window.location.href = googleAuthUrl;
+  };
 
   const logout = async () => {
     try {
@@ -97,14 +109,22 @@ const Navbar: FC = () => {
         ) : (
           <div className="flex justify-end items-center relative">
             <div className="flex items-center">
-              <Link
+              {/* <Link
                 to="/login"
                 className="inline-flex items-center relative px-2 border rounded-full hover:shadow-lg focus:outline-none"
               >
                 <span className="block flex-grow-0 flex-shrink-0 w-8 p-1">
                   Login
                 </span>
-              </Link>
+              </Link> */}
+              <a
+                href="/login"
+                className="flex items-center relative px-2 py-1 rounded-full border hover:shadow-lg focus:outline-none"
+                onClick={_login}
+              >
+                <img src={GoogleIcon} alt="" width={20} />
+                <span className="ml-2">Login</span>
+              </a>
             </div>
           </div>
         )}
