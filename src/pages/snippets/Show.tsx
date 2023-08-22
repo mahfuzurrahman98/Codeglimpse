@@ -48,7 +48,7 @@ const Show = () => {
 
   return (
     <SnippetLayout>
-      <div className="mx-auto py-7 px-3 lg:px-0 max-w-5xl">
+      <div className="mx-auto py-7 px-3 lg:px-0 max-w-4xl">
         <div className="grid grid-cols-1 md:grid-cols-2">
           <div>
             <div className="flex items-center gap-x-2 mb-4">

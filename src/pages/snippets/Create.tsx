@@ -99,7 +99,7 @@ const Create = () => {
 
   return (
     <SnippetLayout>
-      <div className="mx-auto py-7 px-3 lg:px-0 max-w-5xl">
+      <div className="mx-auto py-7 px-3 lg:px-0 max-w-4xl">
         <div className="flex justify-between items-start mb-5 border-b-4 border-gray-700">
           <h1 className="text-2xl md:text-3xl font-bold mb-4">
             Create a Snippet
