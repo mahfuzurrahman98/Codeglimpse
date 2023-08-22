@@ -1,16 +1,21 @@
-import { FormEvent, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { FormEvent, useEffect, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import SearchIcon from '../assets/magnifying-glass.svg';
 
 const SearchBox = () => {
   const navigate = useNavigate();
-  const searchParams = new URLSearchParams();
-  const [param, setParam] = useState<string>('');
+  const [searchParams] = useSearchParams();
+  const [param, setParam] = useState<string>(searchParams.get('q') || '');
+
+  useEffect(() => {
+    alert(searchParams.get('q'));
+  }, []);
 
   const handleSearch = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     const q = param.trim() || '';
-    const page = searchParams.get('page') || '1';
+    const page = searchParams.get('page') || '1 ';
     const limit = searchParams.get('limit') || '10';
 
     navigate(`/?q=${q}&page=${page}&limit=${limit}`, { replace: true });
