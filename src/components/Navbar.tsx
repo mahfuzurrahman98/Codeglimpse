@@ -24,7 +24,7 @@ const Navbar: FC = () => {
 
   return (
     <div className="bg-white shadow px-3 lg:px-0">
-      <nav className="w-full flex justify-between items-center mx-auto h-16 max-w-5xl">
+      <nav className="w-full flex justify-between items-center mx-auto h-16 max-w-4xl">
         <div className="">
           <Link className="" to="/">
             <div className="">
@@ -33,7 +33,7 @@ const Navbar: FC = () => {
           </Link>
         </div>
 
-        <div className="flex mr-4 items-center">
+        <div className="flex items-center">
           <Link
             to="/p/new"
             className="flex items-center gap-x-1 py-2 px-3 hover:bg-gray-200 rounded-full"
@@ -45,7 +45,7 @@ const Navbar: FC = () => {
           </Link>
         </div>
 
-        <div className="flex mr-4 items-center">
+        <div className="flex items-center">
           <Link
             to="/p/library"
             className="flex items-center gap-x-1 py-2 px-3 hover:bg-gray-200 rounded-full"
@@ -57,7 +57,7 @@ const Navbar: FC = () => {
           </Link>
         </div>
 
-        <div className="hidden md:block flex-shrink flex-grow-0 justify-start px-2">
+        <div className="hidden md:block justify-start px-2 w-1/2">
           <SearchBox />
         </div>
 
