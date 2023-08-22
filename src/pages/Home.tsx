@@ -18,34 +18,35 @@ type _SnippetType = SnippetType & { mode: string };
 
 export const Snippet = ({ snippet }: { snippet: _SnippetType }) => {
   return (
-    <div className="bg-gray-200 shadow p-3 rounded-xl">
-      <h3 className="text-xl font-medium">{snippet.title}</h3>
+    <div className="bg-gray-100 shadow p-3 rounded-xl">
+      <h3 className="text-xl font-bold">{snippet.title}</h3>
       <div className="flex justify-between items-center mt-3">
         <div className="flex gap-x-2 items-center">
           <img src={UserIcon} className="w-6" alt="" />
-          <p className="text-md">{snippet.owner}</p>
+          <p className="text-md font-semibold">{snippet.owner}</p>
         </div>
         <div>
           <p className="text-md">
-            {new Date(snippet.created_at)
-              .toUTCString()
-              .split(' ')
-              .slice(0, 4)
-              .join(' ')}
+            {
+              new Date(snippet.created_at).toUTCString()
+              // .split(' ')
+              // .slice(0, 4)
+              // .join(' ')
+            }
           </p>
         </div>
       </div>
 
       <div className="mt-3">
-        <div className="bg-gray-600 flex flex-wrap justify-between items-center p-1">
-          <p className="text-md text-white rounded-md font-medium px-2">
+        <div className="bg-gray-600 flex flex-wrap justify-between items-center px-1 py-[.4rem] rounded-t-md">
+          <p className="text-md text-white rounded-md font-bold px-2">
             {snippet.language}
           </p>
 
           <div className="flex gap-x-2 flex-wrap">
             {snippet.tags.map((tag, index) => (
               <p
-                className="px-2 round bg-gray-300 text-black rounded-md"
+                className="px-2 round bg-gray-200 text-black rounded-md"
                 key={index}
               >
                 {tag}
@@ -59,7 +60,7 @@ export const Snippet = ({ snippet }: { snippet: _SnippetType }) => {
           theme={snippet.theme}
           width="100%"
           height="170px"
-          fontSize={18}
+          fontSize={16}
           value={snippet.source_code + '.....\n'}
           readOnly={true}
           highlightActiveLine={false}

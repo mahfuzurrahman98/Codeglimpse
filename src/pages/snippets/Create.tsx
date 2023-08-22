@@ -128,7 +128,7 @@ const Create = () => {
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 md:grid-cols-2 md:gap-x-5">
             <div className="mb-4">
-              <label htmlFor="title" className="block mb-1 font-semibold">
+              <label htmlFor="title" className="block mb-1 font-bold">
                 Title
               </label>
               <input
@@ -150,7 +150,7 @@ const Create = () => {
             </div>
 
             <div className="mb-4">
-              <label htmlFor="visibility" className="block mb-1 font-semibold">
+              <label htmlFor="visibility" className="block mb-1 font-bold">
                 Visibility
               </label>
               <select
@@ -175,7 +175,7 @@ const Create = () => {
 
           {formData.visibility === 2 && (
             <div className="mb-4">
-              <label htmlFor="title" className="block mb-1 font-semibold">
+              <label htmlFor="title" className="block mb-1 font-bold">
                 Passcode
               </label>
               <input
@@ -200,7 +200,7 @@ const Create = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 md:gap-x-5">
             <div className="mb-4">
-              <label htmlFor="theme" className="block mb-1 font-semibold">
+              <label htmlFor="theme" className="block mb-1 font-bold">
                 Theme
               </label>
               <select
@@ -237,7 +237,7 @@ const Create = () => {
               </select>
             </div>
             <div className="mb-4">
-              <label htmlFor="language" className="block mb-1 font-semibold">
+              <label htmlFor="language" className="block mb-1 font-bold">
                 Language
               </label>
               <select
@@ -264,7 +264,7 @@ const Create = () => {
           </div>
 
           <div className="mb-4">
-            <label htmlFor="sourceCode" className="block mb-1 font-semibold">
+            <label htmlFor="sourceCode" className="block mb-1 font-bold">
               Source Code
             </label>
             <AceEditor
@@ -283,7 +283,7 @@ const Create = () => {
           </div>
 
           <div className="mb-4">
-            <label htmlFor="_tags" className="block mb-1 font-semibold">
+            <label htmlFor="_tags" className="block mb-1 font-bold">
               Tags (comma-separated)
               <span className="ml-1 font-normal text-gray-500">optional</span>
             </label>
