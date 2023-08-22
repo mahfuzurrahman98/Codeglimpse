@@ -64,13 +64,13 @@ const Home = () => {
           {isModalOpen && (
             <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm">
               <div className="bg-white w-96 p-6 rounded-lg shadow-lg">
-                <h2 className="text-xl font-semibold mb-4">Modal Title</h2>
+                <h2 className="text-xl font-bold mb-4">Modal Title</h2>
                 <p className="text-gray-700">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                   Nullam a metus eu nulla dignissim malesuada.
                 </p>
                 <button
-                  className="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:ring"
+                  className="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring"
                   onClick={closeModal}
                 >
                   Close
@@ -90,19 +90,19 @@ const Home = () => {
                       <tr>
                         <th
                           scope="col"
-                          className="px-6 py-3 text-left text-md font-medium"
+                          className="px-6 py-3 text-left text-md font-bold"
                         >
                           Title
                         </th>
                         <th
                           scope="col"
-                          className="px-6 py-3 text-left text-md font-medium"
+                          className="px-6 py-3 text-left text-md font-bold"
                         >
                           Language
                         </th>
                         <th
                           scope="col"
-                          className="px-6 py-3 text-right text-md font-medium"
+                          className="px-6 py-3 text-right text-md font-bold"
                         >
                           Action
                         </th>
@@ -111,13 +111,13 @@ const Home = () => {
                     <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                       {snippets.map((snippet: SnippetType, index: number) => (
                         <tr key={index}>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-bold">
                             {snippet.title}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm">
                             {snippet.language}
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                          <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-bold">
                             <a
                               onClick={openModal}
                               className="text-blue-500 hover:text-blue-700"
