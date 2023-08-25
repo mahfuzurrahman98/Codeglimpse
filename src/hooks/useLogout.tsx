@@ -1,4 +1,4 @@
-import axios from '../api/axios';
+import { axiosPrivate } from '../api/axios';
 import useAuth from './useAuth';
 
 const useLogout = () => {
@@ -11,9 +11,7 @@ const useLogout = () => {
       token: '',
     });
     try {
-      await axios.post('/users/auth/logout', {
-        withCredentials: true,
-      });
+      await axiosPrivate.post('/users/auth/logout');
     } catch (err) {
       console.error(err);
     }

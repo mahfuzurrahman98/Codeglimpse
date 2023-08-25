@@ -19,7 +19,7 @@ const PersistLogin = () => {
         await refresh();
       } catch (err) {
         console.error(err);
-        // logout();
+        logout();
       } finally {
         isMounted && setIsLoading(false);
       }
