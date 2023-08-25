@@ -87,6 +87,7 @@ const Show = () => {
           <CopyButton sourceCode={snippet.source_code} />
         </div>
         <AceEditor
+          className="font-fira-code"
           value={snippet.source_code}
           readOnly
           mode={snippet.mode}
