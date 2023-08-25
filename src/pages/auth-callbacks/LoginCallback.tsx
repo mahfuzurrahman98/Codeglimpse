@@ -1,54 +1,26 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import axios from '../../api/axios';
+import useAuth from '../../hooks/useAuth';
 
 const LoginCallback = () => {
   const [userInfo, setUserInfo] = useState(null);
   const [searchParams] = useSearchParams();
   const [errMsg, setErrMsg] = useState<string>('');
+  const { setAuth } = useAuth();
 
   const login = async (code: string) => {
     try {
-      const client_id = import.meta.env.VITE_GOOGLE_CLIENT_ID;
-      const client_secret = import.meta.env.VITE_GOOGLE_CLIENT_SECRET;
-      const redirect_uri = import.meta.env.VITE_GOOGLE_REDIRECT_LOGIN_URI;
-
-      const data = {
-        code,
-        client_id,
-        client_secret,
-        redirect_uri,
-        grant_type: 'authorization_code',
-      };
-
-      console.log(data);
-
-      const response = await axios.post(
-        'https://oauth2.googleapis.com/token',
-        data
-      );
-
-      if (response.status === 200) {
-        const access_token = response.data.access_token;
-
-        const userinfo_response = await axios.get(
-          'https://www.googleapis.com/oauth2/v3/userinfo',
-          {
-            headers: {
-              Authorization: `Bearer ${access_token}`,
-            },
-          }
-        );
-        console.log(userinfo_response.data);
-        if (userinfo_response.status === 200) {
-          const userinfo = userinfo_response.data;
-          setUserInfo(userinfo);
-        } else {
-          throw new Error('Failed to fetch user info');
-        }
-      } else {
-        throw new Error('Google OAuth login failed');
-      }
+      const response = await axios.post('/users/auth/google-login', { code });
+      console.log(response.data);
+      setUserInfo(response.data);
+      const user = response.data.data.user;
+      const accessToken = response.data.data.access_token;
+      setAuth({
+        name: user.name,
+        email: user.email,
+        token: accessToken,
+      });
     } catch (error: any) {
       setErrMsg(error.message);
       console.error(error);

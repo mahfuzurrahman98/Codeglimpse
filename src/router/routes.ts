@@ -13,7 +13,7 @@ import { RouteType } from '../types';
 const routes: RouteType[] = [
   { path: '/', element: Home, _protected: -1 },
   { path: '/login', element: Login, _protected: 0 },
-  { path: '/auth/google/login', element: LoginCallback, _protected: 0 },
+  { path: '/auth/google/callback', element: LoginCallback, _protected: 0 },
   { path: '/register', element: Register, _protected: 0 },
   { path: '/me', element: Me, _protected: 1 },
   { path: '/p/library', element: Library, _protected: 1 },
