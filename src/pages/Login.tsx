@@ -1,88 +1,54 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { axiosPrivate } from '../api/axios';
-import useAuth from '../hooks/useAuth';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import GoogleIcon from '../assets/google.svg';
+import useLogin from '../hooks/useLogin';
 import RootLayout from './RootLayout';
 
 const Login = () => {
-  const { setAuth } = useAuth();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const from = location.state?.from?.pathname || '/';
-
-  const [formData, setFormData] = useState<{ email: string; password: string }>(
-    {
-      email: 'mahfuz@gmail.com',
-      password: 'abc123',
-    }
-  );
-
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => {
+    setIsModalOpen(true);
   };
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    try {
-      const response = await axiosPrivate.post('/users/auth/login', formData, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      const data = response.data.data;
-      console.log(data.user);
+  const login = useLogin();
 
-      setAuth({
-        name: data.user.name,
-        email: data.user.email,
-        token: data.access_token,
-      });
-      navigate(from, { replace: true });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  useEffect(() => {
+    openModal();
+  }, []);
 
   return (
     <RootLayout>
-      <div>
-        <h1>Login</h1>
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="email">Email</label>
-            <input
-              className="border p-1"
-              type="text"
-              name="email"
-              id="email"
-              placeholder="Enter your email"
-              autoComplete="email"
-              required
-              value={formData.email}
-              onChange={handleChange}
-            />
+      <div className="">
+        {isModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm px-3">
+            <div className="bg-white max-w-lg w-full p-6 rounded-lg shadow-2xl">
+              <div className="border-b mb-5">
+                <h2 className="text-xl font-bold mb-4">Welcome Back!</h2>
+              </div>
+
+              <p className="text-gray-700">
+                Please login with your Google account to continue.
+              </p>
+
+              <button
+                className="flex items-center px-3 py-2 rounded-2xl border border-gray-300 hover:shadow focus:outline-none mt-5"
+                onClick={login}
+              >
+                <img src={GoogleIcon} alt="" width={20} />
+                <span className="ml-2">Sign in with Google</span>
+              </button>
+
+              <p className="mt-3">
+                <span>No account?</span>
+                <span className="ml-1">
+                  <Link to="/signup" className="text-blue-600">
+                    Sign up
+                  </Link>
+                </span>
+              </p>
+            </div>
           </div>
-          <div>
-            <label htmlFor="password">Password</label>
-            <input
-              className="border p-1"
-              type="password"
-              name="password"
-              id="password"
-              placeholder="Enter your password"
-              autoComplete="current-password"
-              required
-              value={formData.password}
-              onChange={handleChange}
-            />
-          </div>
-          <input
-            className="bg-black text-white px-2 py-1 rounded cursor-pointer"
-            type="submit"
-            value="Login"
-          />
-        </form>
+        )}
       </div>
     </RootLayout>
   );
