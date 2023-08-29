@@ -12,9 +12,9 @@ import { RouteType } from '../types';
 
 const routes: RouteType[] = [
   { path: '/', element: Home, _protected: -1 },
-  { path: '/login', element: Login, _protected: 0 },
+  { path: '/signin', element: Login, _protected: 0 },
   { path: '/auth/google/callback', element: LoginCallback, _protected: 0 },
-  { path: '/register', element: Register, _protected: 0 },
+  { path: '/signup', element: Register, _protected: 0 },
   { path: '/me', element: Me, _protected: 1 },
   { path: '/p/library', element: Library, _protected: 1 },
   { path: '/p/new', element: Create, _protected: 1 },
