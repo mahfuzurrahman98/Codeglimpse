@@ -8,7 +8,7 @@ const ProtectedRoute = ({ _protected }: { _protected: number }) => {
 
   if (_protected === 1 && !isAuthenticated) {
     // this route is protected but the user is not logged in
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    return <Navigate to="/signin" state={{ from: location }} replace />;
   }
 
   if (_protected === 0 && isAuthenticated) {
