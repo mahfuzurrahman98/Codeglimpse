@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import axios from '../../api/axios';
+import Loading from '../../components/Loading';
 import useAuth from '../../hooks/useAuth';
 
 const LoginCallback = () => {
-  const [userInfo, setUserInfo] = useState(null);
   const [searchParams] = useSearchParams();
   const [errMsg, setErrMsg] = useState<string>('');
   const { setAuth } = useAuth();
@@ -12,10 +12,14 @@ const LoginCallback = () => {
   const login = async (code: string) => {
     try {
       const response = await axios.post('/users/auth/google-login', { code });
-      console.log(response.data);
-      setUserInfo(response.data);
       const user = response.data.data.user;
       const accessToken = response.data.data.access_token;
+
+      let localData = JSON.parse(localStorage.getItem('data'));
+      localData.callbackSuccess = true;
+      localStorage.setItem('data', JSON.stringify(localData));
+      localStorage.removeItem('data');
+
       setAuth({
         name: user.name,
         email: user.email,
@@ -37,11 +41,7 @@ const LoginCallback = () => {
 
   return (
     <div>
-      {errMsg !== '' ? (
-        <div>{errMsg}</div>
-      ) : (
-        <div>{JSON.stringify(userInfo)}</div>
-      )}
+      <Loading />
     </div>
   );
 };
