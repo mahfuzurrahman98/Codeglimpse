@@ -32,7 +32,15 @@ const Register = () => {
 
               <button
                 className="flex items-center px-3 py-2 rounded-2xl text-white bg-black hover:bg-gray-700 mt-5"
-                onClick={login}
+                onClick={() => {
+                  localStorage.setItem(
+                    'data',
+                    JSON.stringify({
+                      from: 'register',
+                    })
+                  );
+                  login();
+                }}
               >
                 <img src={GoogleIcon} alt="" width={20} />
                 <span className="ml-2">Sign up with Google</span>
