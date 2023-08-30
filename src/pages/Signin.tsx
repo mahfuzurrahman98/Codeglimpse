@@ -4,7 +4,7 @@ import GoogleIcon from '../assets/google.svg';
 import useLogin from '../hooks/useLogin';
 import RootLayout from './RootLayout';
 
-const Login = () => {
+const Signin = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => {
     setIsModalOpen(true);
@@ -54,4 +54,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signin;

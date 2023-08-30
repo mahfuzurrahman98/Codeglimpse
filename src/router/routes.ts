@@ -1,6 +1,6 @@
 import Home from '../pages/Home';
-import Login from '../pages/Login';
 import Register from '../pages/Register';
+import Signin from '../pages/Signin';
 import LoginCallback from '../pages/auth-callbacks/LoginCallback';
 import Me from '../pages/profile/Me';
 import Create from '../pages/snippets/Create';
@@ -12,7 +12,7 @@ import { RouteType } from '../types';
 
 const routes: RouteType[] = [
   { path: '/', element: Home, _protected: -1 },
-  { path: '/signin', element: Login, _protected: 0 },
+  { path: '/signin', element: Signin, _protected: 0 },
   { path: '/auth/google/callback', element: LoginCallback, _protected: 0 },
   { path: '/signup', element: Register, _protected: 0 },
   { path: '/me', element: Me, _protected: 1 },
