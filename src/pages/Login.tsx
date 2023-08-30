@@ -31,7 +31,7 @@ const Login = () => {
               </p>
 
               <button
-                className="flex items-center px-3 py-2 rounded-2xl border border-gray-300 hover:shadow focus:outline-none mt-5"
+                className="flex items-center px-3 py-2 rounded-2xl text-white bg-black hover:bg-gray-700 mt-5"
                 onClick={login}
               >
                 <img src={GoogleIcon} alt="" width={20} />
