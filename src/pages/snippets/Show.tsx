@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import AceEditor from 'react-ace';
 
@@ -19,6 +19,11 @@ const Show = () => {
 
   const params = useParams();
   const uid = params.id;
+  const navigate = useNavigate();
+
+  const isNotEmpty = (obj: any) => {
+    return Object.keys(obj).length !== 0;
+  };
 
   useEffect(() => {
     (async () => {
@@ -29,6 +34,8 @@ const Show = () => {
       } catch (error: any) {
         console.log(error);
         if (error.response.status === 403) {
+        } else if (error.response.status === 404) {
+          navigate('/404');
         }
       }
     })();
@@ -46,7 +53,7 @@ const Show = () => {
       : 'Unknown Date';
   };
 
-  return (
+  return isNotEmpty(snippet) ? (
     <SnippetLayout>
       <div className="grid grid-cols-1 md:grid-cols-2">
         <div>
@@ -91,9 +98,9 @@ const Show = () => {
         fontSize={18}
         width="100%"
         height="800px"
-      />{' '}
+      />
     </SnippetLayout>
-  );
+  ) : null;
 };
 
 export default Show;
