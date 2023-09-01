@@ -24,6 +24,7 @@ const LoginCallback = () => {
       setAuth({
         name: user.name,
         email: user.email,
+        picture: user.picture,
         token: accessToken,
       });
     } catch (error: any) {

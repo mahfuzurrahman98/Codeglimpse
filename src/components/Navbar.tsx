@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import { Link } from 'react-router-dom';
-import UserIcon from '../assets/circle-user.svg';
+// import UserIcon from '../assets/circle-user.svg';
 import CodeBranchIcon from '../assets/code-branch.svg';
 import PlusIcon from '../assets/plus.svg';
 import Logo from '../assets/terminal.svg';
@@ -58,11 +58,11 @@ const Navbar: FC = () => {
             <div className="flex items-center">
               <button
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="inline-flex items-center relative px-2 border rounded-full hover:shadow-lg focus:outline-none"
+                className="inline-flex items-center relative p-1 border rounded-full hover:shadow-lg focus:outline-none"
               >
                 <img
-                  src={UserIcon}
-                  className="block flex-grow-0 flex-shrink-0 w-8 p-1"
+                  src={auth.picture}
+                  className="block flex-grow-0 flex-shrink-0 w-8 rounded-full"
                   alt="User Icon"
                 />
               </button>

@@ -24,9 +24,15 @@ export type AuthContextType = {
   auth: {
     name: string;
     email: string;
+    picture: string;
     token: string;
   };
-  setAuth: (auth: { name: string; email: string; token: string }) => void;
+  setAuth: (auth: {
+    name: string;
+    email: string;
+    picture: string;
+    token: string;
+  }) => void;
 };
 
 export type RouteType = {

@@ -5,6 +5,7 @@ import { AuthContextType } from '../types';
 const initialAuthState = {
   name: '',
   email: '',
+  picture: '',
   token: '',
 };
 
