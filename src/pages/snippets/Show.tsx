@@ -86,9 +86,9 @@ const Show = () => {
   return (
     <SnippetLayout>
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm px-3">
-          <div className="bg-white max-w-lg w-full p-6 rounded-lg shadow-2xl">
-            <div className="border-b mb-5">
+        <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm px-2">
+          <div className="bg-white max-w-lg w-full p-5 rounded-lg shadow-2xl">
+            <div className="border-b mb-3">
               <h2 className="text-xl font-bold mb-4">Private snippet</h2>
             </div>
 
@@ -132,9 +132,11 @@ const Show = () => {
               </button>
             </form>
 
-            <Link to="/" className="text-blue-600">
-              Back
-            </Link>
+            <div className="mt-3">
+              <Link to="/" className="text-black underline">
+                Back to Home
+              </Link>
+            </div>
           </div>
         </div>
       )}
