@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 import { Outlet } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import useLogout from '../hooks/useLogout';
@@ -15,14 +15,6 @@ const PersistLogin = () => {
   useEffect(() => {
     let isMounted = true;
 
-    let localData = JSON.parse(localStorage.getItem('data'));
-    if (localData.success) {
-      toast.success(
-        localData.from == 'signin'
-          ? 'Login successfull'
-          : 'Welcome to Codeglimpse'
-      );
-    }
     const verifyRefreshToken = async () => {
       try {
         await refresh();
