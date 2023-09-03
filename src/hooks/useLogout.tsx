@@ -8,6 +8,7 @@ const useLogout = () => {
     setAuth({
       name: '',
       email: '',
+      picture: '',
       token: '',
     });
     try {

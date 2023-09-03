@@ -27,6 +27,8 @@ const LoginCallback = () => {
         picture: user.picture,
         token: accessToken,
       });
+
+      localStorage.setItem('picture', user.picture);
     } catch (error: any) {
       setErrMsg(error.message);
       console.error(error);

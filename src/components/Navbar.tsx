@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import { Link } from 'react-router-dom';
-// import UserIcon from '../assets/circle-user.svg';
+import UserIcon from '../assets/circle-user.svg';
 import CodeBranchIcon from '../assets/code-branch.svg';
 import PlusIcon from '../assets/plus.svg';
 import Logo from '../assets/terminal.svg';
@@ -24,7 +24,6 @@ const Navbar: FC = () => {
             </div>
           </Link>
         </div>
-
         <div className="flex items-center">
           <Link
             to="/p/new"
@@ -61,7 +60,7 @@ const Navbar: FC = () => {
                 className="inline-flex items-center relative p-1 border rounded-full hover:shadow-lg focus:outline-none"
               >
                 <img
-                  src={auth.picture}
+                  src={auth.picture?.length ? auth.picture : UserIcon}
                   className="block flex-grow-0 flex-shrink-0 w-8 rounded-full"
                   alt="User Icon"
                 />
