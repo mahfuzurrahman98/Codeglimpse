@@ -100,7 +100,7 @@ const Create = () => {
     <SnippetLayout>
       <div className="flex justify-between items-start mb-5 border-b-4 border-gray-700">
         <h1 className="text-2xl md:text-3xl font-bold mb-4">
-          Create a Snippet
+          Create a Snippet|
         </h1>
       </div>
       <Toaster
