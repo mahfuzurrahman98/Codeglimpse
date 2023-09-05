@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 // import useAuth from '../../hooks/useAuth';
 import { SnippetType } from '../../types';
@@ -92,6 +92,12 @@ const Home = () => {
                         {snippet.language}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-bold">
+                        <Link
+                          to={`/p/${snippet.uid}/edit`}
+                          className="text-red-500 hover:text-blue-700"
+                        >
+                          Edit
+                        </Link>
                         <a
                           // onClick={openModal}
                           className="text-red-500 hover:text-blue-700"
