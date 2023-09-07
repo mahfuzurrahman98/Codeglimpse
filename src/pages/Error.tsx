@@ -1,14 +1,17 @@
 import { Link } from 'react-router-dom';
 import Logo from '../assets/terminal.svg';
+import errors from '../lib/data/errors';
+import { errorType } from '../types';
 
-const NotFound = () => {
+const Error = ({ code }: { code: number }) => {
+  const error = errors.filter((err: errorType) => err.code === code)[0];
   return (
     <div className="flex items-center justify-center min-h-screen bg-black text-white">
       <div className="rounded flex flex-col justify-center text-center">
-        <h2 className="text-3xl font-semibold mb-4">404 | Not found</h2>
-        <p className="text-gray-200 mb-4">
-          The page you are looking for is not valid.
-        </p>
+        <h2 className="text-3xl font-semibold mb-4">
+          {error.code} | {error.message}
+        </h2>
+        <p className="text-gray-200 mb-4">{error.description}</p>
 
         <Link
           to="/"
@@ -24,4 +27,4 @@ const NotFound = () => {
   );
 };
 
-export default NotFound;
+export default Error;
