@@ -46,3 +46,8 @@ export type SnippetType = {
   owner: string;
   created_at: string;
 } & formDataType;
+
+export type errorType = {
+  code: number;
+  message: string;
+};
