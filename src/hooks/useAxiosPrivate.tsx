@@ -39,6 +39,8 @@ const useAxiosPrivate = () => {
           } catch (err) {
             console.log(err);
           }
+        } else {
+          return Promise.reject(error);
         }
       }
     );
