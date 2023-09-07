@@ -50,4 +50,5 @@ export type SnippetType = {
 export type errorType = {
   code: number;
   message: string;
+  description: string;
 };
