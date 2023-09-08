@@ -57,3 +57,8 @@ export type statusType = {
   loading: boolean;
   error: null | number;
 };
+
+export type optionType = {
+  value: string;
+  label: string;
+};
