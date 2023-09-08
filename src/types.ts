@@ -52,3 +52,8 @@ export type errorType = {
   message: string;
   description: string;
 };
+
+export type statusType = {
+  loading: boolean;
+  error: null | number;
+};
