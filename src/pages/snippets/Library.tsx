@@ -91,10 +91,10 @@ const Home = () => {
                       <td className="px-6 py-4 whitespace-nowrap text-sm">
                         {snippet.language}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-bold">
+                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-bold flex gap-x-5">
                         <Link
                           to={`/p/${snippet.uid}/edit`}
-                          className="text-red-500 hover:text-blue-700"
+                          className="text-blue-500 hover:text-blue-700"
                         >
                           Edit
                         </Link>
