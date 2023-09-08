@@ -13,16 +13,18 @@ import toast from 'react-hot-toast';
 import axios from '../../api/axios';
 import CopyButton from '../../components/CopyButton';
 import ShareButton from '../../components/ShareButton';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import SnippetLayout from './SnippetLayout';
 
 const Show = () => {
-  const [snippet, setSnippet] = useState<any>({});
-
   const params = useParams();
-  const uid = params.id;
   const navigate = useNavigate();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const axiosPrivate = useAxiosPrivate();
 
+  const uid = params.id;
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [snippet, setSnippet] = useState<any>({});
   const [formData, setFormData] = useState({
     pass_code: '',
   });
@@ -35,7 +37,7 @@ const Show = () => {
   useEffect(() => {
     (async () => {
       try {
-        const response = await axios.get(`/snippets/${uid}`);
+        const response = await axiosPrivate.get(`/snippets/${uid}`);
         console.log(response.data.data.snippet);
         setSnippet(response.data.data.snippet);
         setIsModalOpen(false);
