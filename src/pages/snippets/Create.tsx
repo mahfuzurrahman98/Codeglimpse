@@ -1,5 +1,5 @@
-import { ChangeEvent, useEffect, useState } from 'react';
-import { Toaster } from 'react-hot-toast';
+import { useEffect, useState } from 'react';
+import { Toaster, toast } from 'react-hot-toast';
 import CreateableReactSelect from 'react-select/creatable';
 
 import LoadingGIF from '../../assets/loading.gif';
@@ -16,18 +16,18 @@ import axios from '../../api/axios';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import SnippetLayout from './SnippetLayout';
 
+import { useNavigate } from 'react-router-dom';
 import tags from '../../lib/data/tags';
 import { LanguageType, ThemeType, formDataType } from '../../types';
 
 const Create = () => {
+  const navigate = useNavigate();
+  const axiosPrivate = useAxiosPrivate();
+
   const options: { value: string; label: string }[] = [];
   tags.forEach((tag: string) => {
     options.push({ value: tag, label: tag });
   });
-
-  const [pending, setPending] = useState<boolean>(false);
-  const [languages, setLanguages] = useState<LanguageType[]>([]);
-  const [themes, setThemes] = useState<ThemeType[]>([]);
 
   const initialFormData: formDataType = {
     title: '',
@@ -39,6 +39,9 @@ const Create = () => {
     tags: [],
   };
 
+  const [pending, setPending] = useState<boolean>(false);
+  const [languages, setLanguages] = useState<LanguageType[]>([]);
+  const [themes, setThemes] = useState<ThemeType[]>([]);
   const [formData, setFormData] = useState(initialFormData);
   const [mode, setMode] = useState<string>('');
 
@@ -46,15 +49,10 @@ const Create = () => {
     (async () => {
       try {
         const response = await axios.get('/data/languages');
-        // console.log(response.data.data.languages);
         setLanguages(response.data.data.languages);
-      } catch (err) {
-        console.log(err);
-      }
 
-      try {
-        const response = await axios.get('/data/themes');
-        setThemes(response.data.data.themes);
+        const response2 = await axios.get('/data/themes');
+        setThemes(response2.data.data.themes);
       } catch (err) {
         console.log(err);
       }
@@ -71,26 +69,20 @@ const Create = () => {
     console.log(mode);
   }, [formData.language]);
 
-  const handleTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    // set it with function with prevState
-    setFormData((prevState) => ({
-      ...prevState,
-      title: event.target.value,
-    }));
-    console.log(formData);
-  };
-
-  const axiosPrivate = useAxiosPrivate();
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setPending(true);
 
     console.log(formData);
+    // return;
 
     try {
-      const response = axiosPrivate.post('/snippets', formData);
-      console.log(response);
-      // to
+      const response = await axiosPrivate.post('/snippets', formData);
+      toast.success('Snippet created successfully');
+
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+      const uid = response.data.data.snippet.uid;
+      navigate(`/p/${uid}`);
     } catch (err) {
       console.log(err);
     }
@@ -130,11 +122,10 @@ const Create = () => {
               id="title"
               value={formData.title}
               onChange={(e) =>
-                // setFormData({
-                //   ...formData,
-                //   title: e.target.value,
-                // })
-                handleTitleChange(e)
+                setFormData({
+                  ...formData,
+                  title: e.target.value,
+                })
               }
               placeholder="Enter title"
               className="w-full px-2 py-1 border-2 border-gray-300 rounded focus:outline-none focus:border-black"
