@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import PersistLogin from '../components/PersistLogin';
-import NotFound from '../pages/NotFound';
+import Error from '../pages/Error';
 import ProtectedRoute from './ProtectedRoute';
 import routes from './routes';
 
@@ -34,7 +34,7 @@ const Router = () => {
             }
           })}
         </Route>
-        <Route path="*" element={<NotFound />} />
+        <Route path="*" element={<Error code={404} />} />
       </Routes>
     </BrowserRouter>
   );
