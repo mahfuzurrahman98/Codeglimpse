@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 import { Link, useSearchParams } from 'react-router-dom';
+import LoadingGIF from '../../assets/loading.gif';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
-// import useAuth from '../../hooks/useAuth';
 import { SnippetType } from '../../types';
 
 import '../../utils/imports/ace-languages';
@@ -15,16 +16,9 @@ const Home = () => {
   // const { auth } = useAuth();
   const [snippets, setSnippets] = useState<SnippetType[]>([]);
   const [searchParams] = useSearchParams();
-
-  // const [isModalOpen, setIsModalOpen] = useState(false);
-
-  // const openModal = () => {
-  //   setIsModalOpen(true);
-  // };
-
-  // const closeModal = () => {
-  //   setIsModalOpen(false);
-  // };
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [deleteSnippetId, setDeleteSnippetId] = useState<string>('');
+  const [pending, setPending] = useState<boolean>(false);
 
   // if search params change set snippets to new data
   const axiosPrivate = useAxiosPrivate();
@@ -45,6 +39,18 @@ const Home = () => {
     }
   };
 
+  const deleteSnippet = async () => {
+    try {
+      await axiosPrivate.delete(`/snippets/${deleteSnippetId}`);
+      await getAllMySnippets();
+      setIsModalOpen(false);
+      setPending(false);
+      toast.success('Snippet deleted successfully');
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     getAllMySnippets();
   }, [searchParams]);
@@ -55,6 +61,65 @@ const Home = () => {
 
   return (
     <SnippetLayout>
+      <Toaster
+        position="bottom-right"
+        toastOptions={{
+          className: '',
+          duration: 5000,
+          style: {
+            background: '#363636',
+            color: '#fff',
+          },
+          success: {
+            duration: 3000,
+          },
+        }}
+      />
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm px-2">
+          <div className="bg-white max-w-lg w-full p-5 rounded-lg shadow-2xl">
+            <div className="border-b mb-3">
+              <h2 className="text-xl font-bold mb-4">Delete snippet</h2>
+            </div>
+            <div>
+              <p className="text-gray-700">
+                Are you sure you want to delete this snippet?
+              </p>
+            </div>
+            <div className="mt-3">
+              {!pending && (
+                <button
+                  onClick={() => {
+                    setIsModalOpen(false);
+                    setDeleteSnippetId('');
+                  }}
+                  className="px-3 py-1 text-white bg-gray-500 hover:bg-gray-600 rounded-lg mr-3"
+                >
+                  Cancel
+                </button>
+              )}
+              <button
+                onClick={() => {
+                  setPending(true);
+                  deleteSnippet();
+                }}
+                className="px-3 py-1 text-white bg-red-500 hover:bg-red-600 rounded-lg"
+              >
+                {pending ? (
+                  <div className="flex items-center gap-x-1">
+                    <span>
+                      <img src={LoadingGIF} alt="Loading" className="w-5 h-5" />
+                    </span>
+                    <span>Deleting...</span>
+                  </div>
+                ) : (
+                  'Delete'
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="flex flex-col">
         <div className="-m-1.5 overflow-x-auto">
           <div className="p-1.5 min-w-full inline-block align-middle">
@@ -99,8 +164,11 @@ const Home = () => {
                           Edit
                         </Link>
                         <a
-                          // onClick={openModal}
-                          className="text-red-500 hover:text-blue-700"
+                          onClick={() => {
+                            setIsModalOpen(true);
+                            setDeleteSnippetId(snippet.uid);
+                          }}
+                          className="text-red-500 hover:text-red-700"
                           href="#"
                         >
                           Delete
