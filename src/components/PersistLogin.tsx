@@ -19,7 +19,6 @@ const PersistLogin = () => {
       try {
         await refresh();
       } catch (err) {
-        console.error(err);
         logout();
       } finally {
         isMounted && setIsLoading(false);
@@ -28,14 +27,6 @@ const PersistLogin = () => {
 
     !auth?.token ? verifyRefreshToken() : setIsLoading(false);
 
-    // alert('picture' + auth?.picture);
-    // if (auth?.token) {
-    //   alert('setting picture');
-    //   const _picture = localStorage.getItem('picture');
-    //   if (_picture) {
-    //     auth.picture = _picture;
-    //   }
-    // }
     return () => {
       isMounted = false;
     };
