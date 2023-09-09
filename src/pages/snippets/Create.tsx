@@ -80,11 +80,14 @@ const Create = () => {
       const response = await axiosPrivate.post('/snippets', formData);
       toast.success('Snippet created successfully');
 
-      await new Promise((resolve) => setTimeout(resolve, 3000));
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       const uid = response.data.data.snippet.uid;
       navigate(`/p/${uid}`);
-    } catch (err) {
-      console.log(err);
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error.response.data.detail);
+    } finally {
+      setPending(false);
     }
   };
 

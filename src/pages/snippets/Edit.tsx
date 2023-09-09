@@ -116,9 +116,12 @@ const Edit = () => {
       if (snippet.visibility === 1) {
         snippet.pass_code = undefined;
       }
+
       await axiosPrivate.put(`/snippets/${uid}`, snippet);
       toast.success('Snippet updated successfully');
-    } catch (error) {
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error.response.data.detail);
     } finally {
       setPending(false);
     }
