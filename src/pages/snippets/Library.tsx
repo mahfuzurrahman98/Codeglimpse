@@ -48,16 +48,13 @@ const Home = () => {
       toast.success('Snippet deleted successfully');
     } catch (error) {
       console.log(error);
+      toast.error('Something went wrong');
     }
   };
 
   useEffect(() => {
     getAllMySnippets();
   }, [searchParams]);
-
-  useEffect(() => {
-    getAllMySnippets();
-  }, []);
 
   return (
     <SnippetLayout>
