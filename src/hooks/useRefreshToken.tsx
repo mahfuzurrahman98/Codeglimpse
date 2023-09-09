@@ -7,6 +7,7 @@ const useRefreshToken = () => {
   const refresh = async () => {
     try {
       const response = await axiosPrivate.post('/users/auth/refreshtoken');
+      // console.log(response);
       const data = response.data.data;
 
       setAuth({
@@ -18,7 +19,7 @@ const useRefreshToken = () => {
 
       return data.access_token;
     } catch (error) {
-      console.log(error);
+      console.log('error from useRefreshToken.tsx', error);
       throw error;
     }
   };

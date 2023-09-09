@@ -1,10 +1,12 @@
 import { useEffect } from 'react';
 import { axiosPrivate } from '../api/axios';
 import useAuth from './useAuth';
+import useLogout from './useLogout';
 import useRefreshToken from './useRefreshToken';
 
 const useAxiosPrivate = () => {
   const refreshToken = useRefreshToken();
+  const logout = useLogout();
   const { auth } = useAuth();
 
   useEffect(() => {
@@ -38,8 +40,12 @@ const useAxiosPrivate = () => {
             return axiosPrivate(previousRequest);
           } catch (err) {
             console.log(err);
+            logout();
+            return Promise.reject(error);
           }
         } else {
+          console.log(error);
+          logout();
           return Promise.reject(error);
         }
       }
