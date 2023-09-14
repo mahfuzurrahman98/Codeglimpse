@@ -30,7 +30,7 @@ const Home = () => {
       const limit = searchParams.get('limit') || '10';
 
       const response = await axiosPrivate.get(
-        `/snippets/my/?q=${q}&page=${page}&limit=${limit}`
+        `/snippets/my?q=${q}&page=${page}&limit=${limit}`
       );
       setSnippets(response.data.data.snippets);
     } catch (error) {

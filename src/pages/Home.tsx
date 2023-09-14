@@ -37,7 +37,7 @@ export const Pagination = ({
         {i != Number(searchParams.get('page')) ? (
           <Link
             key={i} // Add a unique key to each Link component
-            to={`/?q=${
+            to={`?q=${
               searchParams.get('q') ? searchParams.get('q') : ''
             }&page=${i}&limit=${_limit}`}
           >
@@ -130,7 +130,7 @@ const Home = () => {
       const limit = searchParams.get('limit') || _limit;
 
       const response = await axios.get(
-        `/snippets/?q=${q}&page=${page}&limit=${limit}`
+        `/snippets?q=${q}&page=${page}&limit=${limit}`
       );
       setSnippets(response.data.data.snippets);
       setTotalSnippets(response.data.data.total);
@@ -158,7 +158,7 @@ const Home = () => {
         <div className="flex gap-x-2">
           {Number(searchParams.get('page')) > 1 && (
             <Link
-              to={`/?q=${
+              to={`?q=${
                 searchParams.get('q') ? searchParams.get('q') : ''
               }&page=${
                 Number(searchParams.get('page') || 1) - 1
@@ -177,7 +177,7 @@ const Home = () => {
           {Number(searchParams.get('page')) <
             Math.ceil(totalSnippets / _limit) && (
             <Link
-              to={`/?q=${
+              to={`?q=${
                 searchParams.get('q') ? searchParams.get('q') : ''
               }&page=${
                 Number(searchParams.get('page') || 1) + 1
