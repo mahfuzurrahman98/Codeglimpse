@@ -16,6 +16,43 @@ import SearchBox from '../components/SearchBox';
 
 type _SnippetType = SnippetType & { mode: string };
 
+const _limit = 1;
+
+export const Pagination = ({
+  totalSnippets,
+  searchParams,
+}: {
+  totalSnippets: number;
+  searchParams: URLSearchParams;
+}) => {
+  const links = [];
+  for (let i = 1; i <= Math.ceil(totalSnippets / _limit); i++) {
+    links.push(
+      <button
+        className={`px-3 py-1 rounded-md ${
+          i == Number(searchParams.get('page')) ? 'bg-gray-700' : 'bg-black'
+        } text-white hover:bg-gray-700`}
+        disabled={i == Number(searchParams.get('page'))}
+      >
+        {i != Number(searchParams.get('page')) ? (
+          <Link
+            key={i} // Add a unique key to each Link component
+            to={`/?q=${
+              searchParams.get('q') ? searchParams.get('q') : ''
+            }&page=${i}&limit=${_limit}`}
+          >
+            {i}
+          </Link>
+        ) : (
+          i
+        )}
+      </button>
+    );
+  }
+
+  return <>{links}</>;
+};
+
 export const Snippet = ({ snippet }: { snippet: _SnippetType }) => {
   return (
     <div className="bg-gray-100 shadow p-3 rounded-xl">
@@ -81,20 +118,22 @@ export const Snippet = ({ snippet }: { snippet: _SnippetType }) => {
 const Home = () => {
   // const { auth } = useAuth();
   const [snippets, setSnippets] = useState<_SnippetType[]>([]);
+  const [totalSnippets, setTotalSnippets] = useState<number>(0);
   const [searchParams] = useSearchParams();
 
   // if search params change set snippets to new data
 
   const getAllPublicSnippets = async () => {
     try {
-      const q = searchParams.get('q') || '';
+      const q = searchParams.get('q') ? searchParams.get('q') : '' || '';
       const page = searchParams.get('page') || '1';
-      const limit = searchParams.get('limit') || '10';
+      const limit = searchParams.get('limit') || _limit;
 
       const response = await axios.get(
         `/snippets/?q=${q}&page=${page}&limit=${limit}`
       );
       setSnippets(response.data.data.snippets);
+      setTotalSnippets(response.data.data.total);
     } catch (error) {
       setSnippets([]);
       console.log(error);
@@ -114,6 +153,42 @@ const Home = () => {
       {snippets.map((snippet: _SnippetType, index: number) => (
         <Snippet snippet={snippet} key={index} />
       ))}
+
+      <div className="flex justify-center items-center mt-5">
+        <div className="flex gap-x-2">
+          {Number(searchParams.get('page')) > 1 && (
+            <Link
+              to={`/?q=${
+                searchParams.get('q') ? searchParams.get('q') : ''
+              }&page=${
+                Number(searchParams.get('page') || 1) - 1
+              }&limit=${_limit}`}
+              className="px-3 py-1 rounded-md bg-black text-white hover:bg-gray-700"
+            >
+              Prev
+            </Link>
+          )}
+
+          <Pagination
+            totalSnippets={totalSnippets}
+            searchParams={searchParams}
+          />
+
+          {Number(searchParams.get('page')) <
+            Math.ceil(totalSnippets / _limit) && (
+            <Link
+              to={`/?q=${
+                searchParams.get('q') ? searchParams.get('q') : ''
+              }&page=${
+                Number(searchParams.get('page') || 1) + 1
+              }&limit=${_limit}`}
+              className="px-3 py-1 rounded-md bg-black text-white hover:bg-gray-700"
+            >
+              Next
+            </Link>
+          )}
+        </div>
+      </div>
     </RootLayout>
   );
 };
