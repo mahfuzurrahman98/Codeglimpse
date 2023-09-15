@@ -104,7 +104,7 @@ const Home = () => {
                         setIsModalOpen(false);
                         setDeleteSnippetId('');
                       }}
-                      className="px-3 py-1 text-white bg-gray-500 hover:bg-gray-600 rounded-lg mr-3"
+                      className="px-3 py-1 text-white bg-gray-500 hover:bg-gray-600 rounded mr-3"
                     >
                       Cancel
                     </button>
@@ -114,7 +114,7 @@ const Home = () => {
                       setPending(true);
                       deleteSnippet();
                     }}
-                    className="px-3 py-1 text-white bg-red-500 hover:bg-red-600 rounded-lg"
+                    className="px-3 py-1 text-white bg-red-500 hover:bg-red-600 rounded"
                   >
                     {pending ? (
                       <div className="flex items-center gap-x-1">
@@ -140,60 +140,52 @@ const Home = () => {
             <div className="-m-1.5 overflow-x-auto">
               <div className="p-1.5 min-w-full inline-block align-middle">
                 <div className="overflow-hidden">
-                  <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                    <thead>
-                      <tr>
-                        <th
-                          scope="col"
-                          className="px-6 py-3 text-left text-md font-bold"
-                        >
-                          Title
-                        </th>
-                        <th
-                          scope="col"
-                          className="px-6 py-3 text-left text-md font-bold"
-                        >
-                          Language
-                        </th>
-                        <th
-                          scope="col"
-                          className="px-6 py-3 text-right text-md font-bold"
-                        >
-                          Action
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                      {snippets.map((snippet: SnippetType, index: number) => (
-                        <tr key={index}>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-bold">
-                            {snippet.title}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm">
-                            {snippet.language}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-bold flex gap-x-5">
-                            <Link
-                              to={`/p/${snippet.uid}/edit`}
-                              className="text-blue-500 hover:text-blue-700"
-                            >
-                              Edit
-                            </Link>
-                            <a
-                              onClick={() => {
-                                setIsModalOpen(true);
-                                setDeleteSnippetId(snippet.uid);
-                              }}
-                              className="text-red-500 hover:text-red-700"
-                              href="#"
-                            >
-                              Delete
-                            </a>
-                          </td>
+                  {snippets.length > 0 ? (
+                    <table className="min-w-full table-auto border-collapse border-black border-2">
+                      <thead className="text-white bg-black">
+                        <tr className="text-md font-bold rounded-t-md">
+                          <th className="py-2 pl-4 text-left">Title</th>
+                          <th className="py-2 text-left">Language</th>
+                          <th className="py-2">Created at</th>
+                          <th className="py-2 pr-4 text-right">Action</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                        {snippets.map((snippet: SnippetType, index: number) => (
+                          <tr key={index} className="bg-gray-200 border-b-2 border-b-black">
+                            <td className="py-3 pl-4 font-semibold">
+                              {snippet.title}
+                            </td>
+                            <td className="py-3">{snippet.language}</td>
+                            <td className="py-3 text-center">{snippet.created_at}</td>
+                            <td className="py-3 px-4 space-x-4 flex justify-end text-sm">
+                              <Link
+                                to={`/p/${snippet.uid}/edit`}
+                                className="bg-black text-white px-2 py-1 rounded hover:bg-gray-600 transition duration-300 ease-in-out"
+                              >
+                                Edit
+                              </Link>
+                              <button
+                                onClick={() => {
+                                  setIsModalOpen(true);
+                                  setDeleteSnippetId(snippet.uid);
+                                }}
+                                className="bg-red-600 text-white px-2 py-1 rounded hover:bg-red-700 transition duration-300 ease-in-out"
+                              >
+                                Delete
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  ) : (
+                    <div className="flex items-center justify-center min-h-[70vh]">
+                      <p className="text-gray-800 text-2xl">
+                        You don't have any snippets
+                      </p>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
