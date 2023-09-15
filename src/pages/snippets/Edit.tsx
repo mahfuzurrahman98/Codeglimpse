@@ -219,7 +219,6 @@ const Edit = () => {
                   }
                   placeholder="Enter pass_code"
                   className="w-full px-2 py-[4.5px] border-2 border-gray-300 rounded focus:outline-none focus:border-black"
-                  required
                 />
               </div>
             )}
