@@ -54,6 +54,10 @@ const Show = () => {
       } catch (error: any) {
         console.log(error);
         if (error.response.status === 403) {
+          setStatus({
+            loading: false,
+            error: null,
+          });
           setIsModalOpen(true);
         } else if (error.response.status === 404) {
           navigate('/404');
