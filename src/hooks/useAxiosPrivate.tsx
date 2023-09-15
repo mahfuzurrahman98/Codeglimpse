@@ -45,7 +45,7 @@ const useAxiosPrivate = () => {
           }
         } else {
           console.log(error);
-          logout();
+          // logout();
           return Promise.reject(error);
         }
       }
