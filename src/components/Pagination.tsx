@@ -8,7 +8,7 @@ export const Pagination = ({
   searchParams: URLSearchParams;
 }) => {
   const links = [];
-  const _limit = 1;
+  const _limit = 10;
 
   for (let i = 1; i <= Math.ceil(totalSnippets / _limit); i++) {
     links.push(
