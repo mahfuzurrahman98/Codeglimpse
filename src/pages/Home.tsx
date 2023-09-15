@@ -107,7 +107,7 @@ const Home = () => {
 
   useEffect(() => {
     (async () => {
-      getAllPublicSnippets();
+      await getAllPublicSnippets();
       setStatus({
         loading: false,
         error: null,

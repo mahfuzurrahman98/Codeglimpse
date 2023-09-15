@@ -59,7 +59,7 @@ const Home = () => {
 
   useEffect(() => {
     (async () => {
-      getAllMySnippets();
+      await getAllMySnippets();
       setStatus({
         loading: false,
         error: null,
