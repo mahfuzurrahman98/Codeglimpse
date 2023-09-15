@@ -3,7 +3,7 @@ import AceEditor from 'react-ace';
 import { Link, useSearchParams } from 'react-router-dom';
 import axios from '../api/axios';
 import UserIcon from '../assets/circle-user.svg';
-// import useAuth from '../hooks/useAuth';
+import PlusIcon from '../assets/plus.svg';
 import { SnippetType } from '../types';
 import RootLayout from './RootLayout';
 
@@ -23,19 +23,14 @@ export const Snippet = ({ snippet }: { snippet: _SnippetType }) => {
   return (
     <div className="bg-gray-100 shadow p-3 rounded-xl">
       <h3 className="text-xl font-bold">{snippet.title}</h3>
-      <div className="flex justify-between items-center mt-3">
+      <div className="flex flex-col md:flex-row md:justify-between mt-3">
         <div className="flex gap-x-2 items-center">
           <img src={UserIcon} className="w-6" alt="" />
           <p className="text-md font-semibold">{snippet.owner}</p>
         </div>
-        <div>
+        <div className="mt-2 md:mt-0 md:ml-2">
           <p className="text-md">
-            {
-              new Date(snippet.created_at).toUTCString()
-              // .split(' ')
-              // .slice(0, 4)
-              // .join(' ')
-            }
+            {new Date(snippet.created_at).toUTCString()}
           </p>
         </div>
       </div>
@@ -82,13 +77,12 @@ export const Snippet = ({ snippet }: { snippet: _SnippetType }) => {
 };
 
 const Home = () => {
-  // const { auth } = useAuth();
   const [snippets, setSnippets] = useState<_SnippetType[]>([]);
   const [totalSnippets, setTotalSnippets] = useState<number>(0);
   const [searchParams] = useSearchParams();
+  const [showTooltip, setShowTooltip] = useState<boolean>(false);
 
   // if search params change set snippets to new data
-
   const getAllPublicSnippets = async () => {
     try {
       const q = searchParams.get('q') ? searchParams.get('q') : '' || '';
@@ -122,6 +116,33 @@ const Home = () => {
 
       <div className="flex justify-center items-center mt-5">
         <Pagination totalSnippets={totalSnippets} searchParams={searchParams} />
+      </div>
+
+      <div
+        className={`${showTooltip ? 'block' : 'hidden'} fixed bottom-24 right-5 bg-gray-800 text-white px-2 py-1 rounded-md z-50`}
+      >
+        Create new
+      </div>
+
+      <div
+        className="fixed bottom-10 right-5 z-50"
+        onMouseOver={() => {
+          setShowTooltip(true);
+        }}
+        onMouseLeave={() => {
+          setShowTooltip(false);
+        }}
+      >
+        <div className="flex items-center">
+          <Link
+            to="/p/new"
+            className="flex items-center px-[10px] py-[8px] md:px-[12px] md:py-[10px] hover:bg-gray-200 rounded-full bg-white border-2 border-black"
+          >
+            <span>
+              <img src={PlusIcon} className="w-6 md:w-8" alt="" />
+            </span>
+          </Link>
+        </div>
       </div>
     </RootLayout>
   );
