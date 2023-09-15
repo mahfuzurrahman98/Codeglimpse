@@ -1,8 +1,6 @@
 import { FC, useState } from 'react';
 import { Link } from 'react-router-dom';
 import UserIcon from '../assets/circle-user.svg';
-import CodeBranchIcon from '../assets/code-branch.svg';
-import PlusIcon from '../assets/plus.svg';
 import Logo from '../assets/terminal.svg';
 import useAuth from '../hooks/useAuth';
 import useLogout from '../hooks/useLogout';
@@ -16,35 +14,18 @@ const Navbar: FC = () => {
 
   return (
     <div className="bg-white shadow px-3 lg:px-0">
-      <nav className="w-full flex justify-between items-center mx-auto h-16 max-w-4xl">
-        <div className="">
-          <Link className="" to="/">
-            <div className="">
-              <img src={Logo} alt="" className="w-8" />
+      <nav className="w-full flex justify-between items-center mx-auto h-14 max-w-4xl">
+        <div className="flex items-center">
+          <Link
+            to="/"
+            className="flex items-end py-2 rounded-full"
+          >
+            <div>
+              <img src={Logo} className="w-7" alt="" />
             </div>
-          </Link>
-        </div>
-        <div className="flex items-center">
-          <Link
-            to="/p/new"
-            className="flex items-center gap-x-1 py-2 px-3 hover:bg-gray-200 rounded-full"
-          >
-            <span>
-              <img src={PlusIcon} className="w-5" alt="" />
-            </span>
-            <span>New</span>
-          </Link>
-        </div>
-
-        <div className="flex items-center">
-          <Link
-            to="/p/library"
-            className="flex items-center gap-x-1 py-2 px-3 hover:bg-gray-200 rounded-full"
-          >
-            <span>
-              <img src={CodeBranchIcon} className="w-4" alt="" />
-            </span>
-            <span>Library</span>
+            <div className="text-2xl font-extrabold leading-none">
+              Codeglimpse
+            </div>
           </Link>
         </div>
 
@@ -69,10 +50,10 @@ const Navbar: FC = () => {
               {isDropdownOpen && (
                 <div className="absolute right-0 mt-40 w-48 bg-white border rounded-lg shadow-lg z-10">
                   <Link
-                    to="/me"
+                    to="/p/library"
                     className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
                   >
-                    Profile
+                    Library
                   </Link>
                   <a
                     href="#"
