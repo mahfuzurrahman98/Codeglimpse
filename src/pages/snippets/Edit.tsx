@@ -133,7 +133,7 @@ const Edit = () => {
       component={
         <SnippetLayout>
           <div className="flex justify-between items-start mb-5 border-b-4 border-gray-700">
-            <h1 className="text-2xl md:text-3xl font-bold mb-4">
+            <h1 className="text-2xl font-bold mb-4">
               Edit Snippet
             </h1>
           </div>
@@ -155,7 +155,7 @@ const Edit = () => {
           <form onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 md:grid-cols-2 md:gap-x-5">
               <div className="mb-4">
-                <label htmlFor="title" className="block mb-1 font-bold">
+                <label htmlFor="title" className="block mb-1 font-semibold">
                   Title
                 </label>
                 <input
@@ -176,7 +176,7 @@ const Edit = () => {
               </div>
 
               <div className="mb-4">
-                <label htmlFor="visibility" className="block mb-1 font-bold">
+                <label htmlFor="visibility" className="block mb-1 font-semibold">
                   Visibility
                 </label>
                 <select
@@ -201,7 +201,7 @@ const Edit = () => {
 
             {snippet.visibility === 2 && (
               <div className="mb-4">
-                <label htmlFor="pass_code" className="block mb-1 font-bold">
+                <label htmlFor="pass_code" className="block mb-1 font-semibold">
                   Passcode
                 </label>
                 <input
@@ -225,7 +225,7 @@ const Edit = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 md:gap-x-5">
               <div className="mb-4">
-                <label htmlFor="theme" className="block mb-1 font-bold">
+                <label htmlFor="theme" className="block mb-1 font-semibold">
                   Theme
                 </label>
                 <select
@@ -262,7 +262,7 @@ const Edit = () => {
                 </select>
               </div>
               <div className="mb-4">
-                <label htmlFor="language" className="block mb-1 font-bold">
+                <label htmlFor="language" className="block mb-1 font-semibold">
                   Language
                 </label>
                 <select
@@ -289,7 +289,7 @@ const Edit = () => {
             </div>
 
             <div className="mb-4">
-              <label htmlFor="sourceCode" className="block mb-1 font-bold">
+              <label htmlFor="sourceCode" className="block mb-1 font-semibold">
                 Source Code
               </label>
               <AceEditor
@@ -310,7 +310,7 @@ const Edit = () => {
             </div>
 
             <div className="mb-4">
-              <label htmlFor="_tags" className="block mb-1 font-bold">
+              <label htmlFor="_tags" className="block mb-1 font-semibold">
                 Tags (comma-separated)
                 <span className="ml-1 font-normal text-gray-500">optional</span>
               </label>
