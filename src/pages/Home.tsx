@@ -18,7 +18,7 @@ import SearchBox from '../components/SearchBox';
 
 type _SnippetType = SnippetType & { mode: string };
 
-const _limit = 10;
+const _limit = 3;
 
 export const Snippet = ({ snippet }: { snippet: _SnippetType }) => {
   return (
