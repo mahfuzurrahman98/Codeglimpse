@@ -4,7 +4,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import axios from '../api/axios';
 import UserIcon from '../assets/circle-user.svg';
 import PlusIcon from '../assets/plus.svg';
-import { SnippetType } from '../types';
+import { SnippetType, statusType } from '../types';
 import RootLayout from './RootLayout';
 
 import '../utils/imports/ace-languages';
@@ -12,6 +12,7 @@ import '../utils/imports/ace-themes';
 
 import 'ace-builds/src-noconflict/ext-language_tools';
 import 'ace-builds/src-noconflict/ext-modelist';
+import ComponentLoader from '../components/ComponentLoader';
 import { Pagination } from '../components/Pagination';
 import SearchBox from '../components/SearchBox';
 
@@ -81,6 +82,10 @@ const Home = () => {
   const [totalSnippets, setTotalSnippets] = useState<number>(0);
   const [searchParams] = useSearchParams();
   const [showTooltip, setShowTooltip] = useState<boolean>(false);
+  const [status, setStatus] = useState<statusType>({
+    loading: true,
+    error: null,
+  });
 
   // if search params change set snippets to new data
   const getAllPublicSnippets = async () => {
@@ -101,50 +106,66 @@ const Home = () => {
   };
 
   useEffect(() => {
-    getAllPublicSnippets();
+    (async () => {
+      getAllPublicSnippets();
+      setStatus({
+        loading: false,
+        error: null,
+      });
+    })();
   }, [searchParams]);
 
   return (
-    <RootLayout>
-      <div className="block md:hidden flex-shrink flex-grow-0 justify-start">
-        <SearchBox />
-      </div>
+    <ComponentLoader
+      status={status}
+      component={
+        <RootLayout>
+          <div className="block md:hidden flex-shrink flex-grow-0 justify-start">
+            <SearchBox />
+          </div>
 
-      {snippets.map((snippet: _SnippetType, index: number) => (
-        <Snippet snippet={snippet} key={index} />
-      ))}
+          {snippets.map((snippet: _SnippetType, index: number) => (
+            <Snippet snippet={snippet} key={index} />
+          ))}
 
-      <div className="flex justify-center items-center mt-5">
-        <Pagination totalSnippets={totalSnippets} searchParams={searchParams} />
-      </div>
+          <div className="flex justify-center items-center mt-5">
+            <Pagination
+              totalSnippets={totalSnippets}
+              searchParams={searchParams}
+            />
+          </div>
 
-      <div
-        className={`${showTooltip ? 'block' : 'hidden'} fixed bottom-24 right-5 bg-gray-800 text-white px-2 py-1 rounded-md z-50`}
-      >
-        Create new
-      </div>
-
-      <div
-        className="fixed bottom-10 right-5 z-50"
-        onMouseOver={() => {
-          setShowTooltip(true);
-        }}
-        onMouseLeave={() => {
-          setShowTooltip(false);
-        }}
-      >
-        <div className="flex items-center">
-          <Link
-            to="/p/new"
-            className="flex items-center px-[10px] py-[8px] md:px-[12px] md:py-[10px] hover:bg-gray-200 rounded-full bg-white border-2 border-black"
+          <div
+            className={`${
+              showTooltip ? 'block' : 'hidden'
+            } fixed bottom-24 right-5 bg-gray-800 text-white px-2 py-1 rounded-md z-50`}
           >
-            <span>
-              <img src={PlusIcon} className="w-6 md:w-8" alt="" />
-            </span>
-          </Link>
-        </div>
-      </div>
-    </RootLayout>
+            Create new
+          </div>
+
+          <div
+            className="fixed bottom-10 right-5 z-50"
+            onMouseOver={() => {
+              setShowTooltip(true);
+            }}
+            onMouseLeave={() => {
+              setShowTooltip(false);
+            }}
+          >
+            <div className="flex items-center">
+              <Link
+                to="/p/new"
+                className="flex items-center px-[10px] py-[8px] md:px-[12px] md:py-[10px] hover:bg-gray-200 rounded-full bg-white border-2 border-black"
+              >
+                <span>
+                  <img src={PlusIcon} className="w-6 md:w-8" alt="" />
+                </span>
+              </Link>
+            </div>
+          </div>
+        </RootLayout>
+      }
+    />
   );
 };
 
