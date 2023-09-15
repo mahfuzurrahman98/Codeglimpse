@@ -25,15 +25,15 @@ const Footer = () => {
         </p>
         <div className="flex gap-x-5 justify-center mt-2">
           <a href={gmailLink} target="blank">
-            <img src={GmailIcon} alt="" width={25} />
+            <img src={GmailIcon} alt="" className="w-5 md:w-6" />
           </a>
           |
           <a href={githubLink} target="blank">
-            <img src={GithubIcon} alt="" width={25} />
+            <img src={GithubIcon} alt="" className="w-5 md:w-6" />
           </a>
           |
           <a href={linkedinLink} target="blank">
-            <img src={LinkedInIcon} alt="" width={25} />
+            <img src={LinkedInIcon} alt="" className="w-5 md:w-6" />
           </a>
         </div>
       </div>
