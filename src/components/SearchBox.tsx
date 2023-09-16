@@ -19,10 +19,7 @@ const SearchBox = () => {
     e.preventDefault();
 
     const q = param.trim() || '';
-    const page = searchParams.get('page') || '1';
-    const limit = searchParams.get('limit') || '10';
-
-    navigate(`?q=${q}&page=${page}&limit=${limit}`, { replace: true });
+    navigate(`?q=${q}&page=1&limit=10`, { replace: true });
   };
 
   return (
