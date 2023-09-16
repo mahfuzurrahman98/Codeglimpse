@@ -19,7 +19,7 @@ const SearchBox = () => {
     e.preventDefault();
 
     const q = param.trim() || '';
-    navigate(`?q=${q}&page=1&limit=10`, { replace: true });
+    navigate(`/?q=${q}&page=1&limit=10`, { replace: true });
   };
 
   return (
