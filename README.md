@@ -19,24 +19,30 @@ Features
 Getting Started
 ---------------
 
-This is basically the Frontend repo for the project, you can find the source code for backend here at [Codeglimpse Backend](https://github.com/mahfuzurrahman98/Codeglimpse-API "backend repo")
+This is basically the Frontend repo for the project, you can find the source code for the backend here at [Codeglimpse Backend](https://github.com/mahfuzurrahman98/Codeglimpse-API "backend repo")
 
 To run CodeGlimpse locally, follow these simple steps:
 
 1. Clone this repository to your local machine.
 2. Install the required dependencies for both the frontend and backend:
 
-   `cd Codeglimpse-API`
-   `pip install -r requirements.txt`
+   ` cd Codeglimpse-API `
+   
+   ` pip install -r requirements.txt `
 
-   `cd Codeglimpse`
-   `npm install`
-3. Configure the database connection in the backend settings.
-4. Start the frontend and backend servers:
-
-   `cd frontend npm start`
-   `uvicorn main:app --reload`
-5. Access CodeGlimpse by opening your web browser and navigating to `http://127.0.0.1:5173`
+   ` cd Codeglimpse `
+   
+   ` npm install `
+   
+4. Configure the database connection in the backend settings.
+5. Start the frontend and backend servers:
+6. 
+   ` cd frontend npm start `
+   
+   ` uvicorn main:app --reload `
+   
+8. The Python app will be started at ` http://127.0.0.1:5173 ` and you can test the  APIs on Postman
+9. The React app will be started at ` http://127.0.0.1:8000 ` and you can access it by opening your web browser and navigating to ` http://127.0.0.1:5173 `
 
 Contribute
 ----------
