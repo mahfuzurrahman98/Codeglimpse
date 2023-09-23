@@ -1,27 +1,56 @@
-# React + TypeScript + Vite
+CodeGlimpse
+===========
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+CodeGlimpse is an online platform that allows users to easily share and manage code snippets. It offers the convenience of making snippets private by adding a passcode for added security. Users can quickly log in and sign up using their Google account with just one click, giving them access to their code snippets stored in their personal library.
 
-Currently, two official plugins are available:
+Technologies Used
+-----------------
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+* **Frontend:** CodeGlimpse is built using React for the user interface and Tailwind CSS for styling, ensuring a responsive and visually appealing design.
+* **Backend:** The backend of CodeGlimpse is powered by Python, utilizing the FAST API framework. We've chosen PostgreSQL as our database management system, and we interact with it using the SQLAlchemy ORM for seamless database operations.
 
-## Expanding the ESLint configuration
+Features
+--------
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+* **Code Sharing:** Users can easily paste and share code snippets with others, making collaboration and knowledge sharing a breeze.
+* **Privacy:** CodeGlimpse allows users to set a passcode for their snippets, keeping them private and secure.
+* **One-Click Google Login:** We provide a seamless login experience with one-click Google authentication, simplifying user access to their personal code library.
 
-- Configure the top-level `parserOptions` property like this:
+Getting Started
+---------------
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
+To run CodeGlimpse locally, follow these simple steps:
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+1. Clone this repository to your local machine.
+2. Install the required dependencies for both the frontend and backend:
+
+   shellCopy code
+
+   `cd frontend npm install`
+
+   shellCopy code
+
+   `cd backend pip install -r requirements.txt`
+3. Configure the database connection in the backend settings.
+4. Start the frontend and backend servers:
+
+   shellCopy code
+
+   `cd frontend npm start`
+
+   shellCopy code
+
+   `uvicorn main:app --host 0.0.0.0 --port 8000 --reload`
+5. Access CodeGlimpse by opening your web browser and navigating to `http://localhost:3000`.
+
+Contribute
+----------
+
+We welcome contributions from the community! If you have ideas for improvements or would like to report any issues, please feel free to create a GitHub issue or submit a pull request.
+
+License
+-------
+
+CodeGlimpse is open-source software released under the [MIT License](LICENSE). You are free to use, modify, and distribute this software as per the terms of the license.
+
+Enjoy sharing and managing your code snippets with CodeGlimpse!
