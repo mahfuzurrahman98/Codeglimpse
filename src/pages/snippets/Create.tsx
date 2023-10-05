@@ -113,6 +113,11 @@ const Create = () => {
     // return;
 
     try {
+      if (formData.source_code === '') {
+        toast.error('Source code cannot be empty');
+        return;
+      }
+      
       const response = await axiosPrivate.post('/snippets/review', {
         source_code: formData.source_code,
       });
