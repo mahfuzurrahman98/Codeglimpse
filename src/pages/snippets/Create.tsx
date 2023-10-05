@@ -41,6 +41,8 @@ const Create = () => {
   };
 
   const [pending, setPending] = useState<boolean>(false);
+  const [codeReviewPending, setCodeReviewPending] = useState<boolean>(false);
+
   const [languages, setLanguages] = useState<LanguageType[]>([]);
   const [themes, setThemes] = useState<ThemeType[]>([]);
   const [formData, setFormData] = useState(initialFormData);
@@ -101,15 +103,46 @@ const Create = () => {
     }
   };
 
+  const handleCodeReview = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    setCodeReviewPending(true);
+
+    console.log(formData.source_code);
+    // return;
+
+    try {
+      const response = await axiosPrivate.post('/snippets/review', {
+        source_code: formData.source_code,
+      });
+
+      let message = response.data.data.message;
+      // just keep the portion between ``` and ```
+      message = message.split('```')[1];
+      // remove the first line
+      message = message.split('\n').slice(1).join('\n');
+      console.log(message);
+      setFormData({
+        ...formData,
+        source_code: message,
+      });
+      toast.success('Code review successful');
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error.response.data.detail);
+    } finally {
+      setCodeReviewPending(false);
+    }
+  };
+
   return (
     <ComponentLoader
       status={status}
       component={
         <SnippetLayout>
           <div className="flex justify-between items-start mb-5 border-b-4 border-gray-700">
-            <h1 className="text-2xl font-bold mb-4">
-              Create a Snippet
-            </h1>
+            <h1 className="text-2xl font-bold mb-4">Create a Snippet</h1>
           </div>
           <Toaster
             position="bottom-right"
@@ -150,7 +183,10 @@ const Create = () => {
               </div>
 
               <div className="mb-4">
-                <label htmlFor="visibility" className="block mb-1 font-semibold">
+                <label
+                  htmlFor="visibility"
+                  className="block mb-1 font-semibold"
+                >
                   Visibility
                 </label>
                 <select
@@ -238,7 +274,7 @@ const Create = () => {
               </div>
             </div>
 
-            <div className="mb-4">
+            <div className="mb-0">
               <label htmlFor="sourceCode" className="block mb-1 font-semibold">
                 Source Code
               </label>
@@ -249,6 +285,8 @@ const Create = () => {
                 fontSize={18}
                 width="100%"
                 height="800px"
+                value={formData.source_code}
+                readOnly={codeReviewPending}
                 onChange={(value) =>
                   setFormData({
                     ...formData,
@@ -256,6 +294,29 @@ const Create = () => {
                   })
                 }
               />
+            </div>
+
+            <div className="mb-4 text-end">
+              <button
+                className={`px-4 py-1 text-white hover:bg-gray-600 ${
+                  codeReviewPending ? 'bg-gray-700' : 'bg-black '
+                }`}
+                disabled={codeReviewPending}
+                onClick={handleCodeReview}
+              >
+                {codeReviewPending ? (
+                  <div className="flex items-center">
+                    <img
+                      src={LoadingGIF}
+                      alt="Loading"
+                      className="w-5 h-5 mr-2"
+                    />
+                    Peding code review...
+                  </div>
+                ) : (
+                  'Request Code Review'
+                )}
+              </button>
             </div>
 
             <div className="mb-4">
@@ -282,7 +343,7 @@ const Create = () => {
               className={`px-4 py-1 text-white rounded hover:bg-gray-600 ${
                 pending ? 'bg-gray-700' : 'bg-black '
               }`}
-              disabled={pending}
+              disabled={pending || codeReviewPending}
             >
               {pending ? (
                 <div className="flex items-center">
