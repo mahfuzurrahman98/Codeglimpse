@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
 import CreateableReactSelect from 'react-select/creatable';
-
+import ai_icon from '../../assets/ai.png';
 import LoadingGIF from '../../assets/loading.gif';
 
 import AceEditor from 'react-ace';
@@ -117,7 +117,7 @@ const Create = () => {
         toast.error('Source code cannot be empty');
         return;
       }
-      
+
       const response = await axiosPrivate.post('/snippets/review', {
         source_code: formData.source_code,
       });
@@ -319,7 +319,10 @@ const Create = () => {
                     Peding code review...
                   </div>
                 ) : (
-                  'Request Code Review'
+                  <div className="flex items-center">
+                    <img src={ai_icon} alt="AI" className="w-5 h-5 mr-2" />
+                    Request code review
+                  </div>
                 )}
               </button>
             </div>
