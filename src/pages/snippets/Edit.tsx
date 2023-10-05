@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import CreateableReactSelect from 'react-select/creatable';
-
+import ai_icon from '../../assets/ai.png';
 import LoadingGIF from '../../assets/loading.gif';
 
 import AceEditor from 'react-ace';
@@ -10,6 +10,7 @@ import '../../utils/imports/ace-themes';
 
 import 'ace-builds/src-noconflict/ext-language_tools';
 import 'ace-builds/src-noconflict/ext-modelist';
+``;
 
 import axios from '../../api/axios';
 
@@ -33,7 +34,7 @@ const Edit = () => {
   const axiosPrivate = useAxiosPrivate();
 
   // init data
-  const initialFormData: formDataType = {
+  const initialSnippet: formDataType = {
     title: '',
     language: undefined,
     source_code: '',
@@ -51,8 +52,9 @@ const Edit = () => {
   const [languages, setLanguages] = useState<LanguageType[]>([]);
   const [themes, setThemes] = useState<ThemeType[]>([]);
   const [mode, setMode] = useState<string>('');
-  const [snippet, setSnippet] = useState<formDataType>(initialFormData);
+  const [snippet, setSnippet] = useState<formDataType>(initialSnippet);
   const [pending, setPending] = useState<boolean>(false);
+  const [codeReviewPending, setCodeReviewPending] = useState<boolean>(false);
   const [options] = useState<optionType[]>([]);
   const [defaultOptions] = useState<optionType[]>([]);
 
@@ -109,6 +111,44 @@ const Edit = () => {
     }
   }, [snippet.language]);
 
+  const handleCodeReview = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    setCodeReviewPending(true);
+
+    console.log(snippet.source_code);
+    // return;
+
+    try {
+      if (snippet.source_code === '') {
+        toast.error('Source code cannot be empty');
+        return;
+      }
+
+      const response = await axiosPrivate.post('/snippets/review', {
+        source_code: snippet.source_code,
+      });
+
+      let message = response.data.data.message;
+      // just keep the portion between ``` and ```
+      message = message.split('```')[1];
+      // remove the first line
+      message = message.split('\n').slice(1).join('\n');
+      console.log(message);
+      setSnippet({
+        ...snippet,
+        source_code: message,
+      });
+      toast.success('Code review successful');
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error.response.data.detail);
+    } finally {
+      setCodeReviewPending(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -133,9 +173,7 @@ const Edit = () => {
       component={
         <SnippetLayout>
           <div className="flex justify-between items-start mb-5 border-b-4 border-gray-700">
-            <h1 className="text-2xl font-bold mb-4">
-              Edit Snippet
-            </h1>
+            <h1 className="text-2xl font-bold mb-4">Edit Snippet</h1>
           </div>
           <Toaster
             position="bottom-right"
@@ -176,7 +214,10 @@ const Edit = () => {
               </div>
 
               <div className="mb-4">
-                <label htmlFor="visibility" className="block mb-1 font-semibold">
+                <label
+                  htmlFor="visibility"
+                  className="block mb-1 font-semibold"
+                >
                   Visibility
                 </label>
                 <select
@@ -288,7 +329,7 @@ const Edit = () => {
               </div>
             </div>
 
-            <div className="mb-4">
+            <div className="mb-0">
               <label htmlFor="sourceCode" className="block mb-1 font-semibold">
                 Source Code
               </label>
@@ -307,6 +348,32 @@ const Edit = () => {
                   })
                 }
               />
+            </div>
+
+            <div className="mb-4 text-end">
+              <button
+                className={`px-4 py-1 text-white hover:bg-gray-600 ${
+                  codeReviewPending ? 'bg-gray-700' : 'bg-black '
+                }`}
+                disabled={codeReviewPending}
+                onClick={handleCodeReview}
+              >
+                {codeReviewPending ? (
+                  <div className="flex items-center">
+                    <img
+                      src={LoadingGIF}
+                      alt="Loading"
+                      className="w-5 h-5 mr-2"
+                    />
+                    Peding code review...
+                  </div>
+                ) : (
+                  <div className="flex items-center">
+                    <img src={ai_icon} alt="AI" className="w-5 h-5 mr-2" />
+                    Request code review
+                  </div>
+                )}
+              </button>
             </div>
 
             <div className="mb-4">
