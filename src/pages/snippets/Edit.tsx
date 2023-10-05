@@ -10,7 +10,6 @@ import '../../utils/imports/ace-themes';
 
 import 'ace-builds/src-noconflict/ext-language_tools';
 import 'ace-builds/src-noconflict/ext-modelist';
-``;
 
 import axios from '../../api/axios';
 
@@ -341,6 +340,7 @@ const Edit = () => {
                 fontSize={18}
                 width="100%"
                 height="800px"
+                readOnly={codeReviewPending}
                 onChange={(value) =>
                   setSnippet({
                     ...snippet,
