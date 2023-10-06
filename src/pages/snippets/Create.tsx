@@ -123,9 +123,8 @@ const Create = () => {
       });
 
       let message = response.data.data.message;
-      // just keep the portion between ``` and ```
+      // just keep the portion between ``` and ```, and also remove the first line
       message = message.split('```')[1];
-      // remove the first line
       message = message.split('\n').slice(1).join('\n');
       console.log(message);
       setFormData({
