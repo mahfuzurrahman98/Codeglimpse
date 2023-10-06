@@ -11,28 +11,29 @@ const Router = () => {
     <BrowserRouter>
       <Routes>
         <Route element={<PersistLogin key={-1} />}>
-          {routes.map((route: RouteType, key: number) => {
-            if (route._protected === -1) {
-              // means thes route is public, it doesn't bother if the user is logged in or not
-              return (
-                <Route
-                  key={key}
-                  path={route.path}
-                  element={<route.element />}
-                />
-              );
-            } else {
-              // means the route is protected, it will check if the user is logged in or not
-              return (
-                <Route
-                  key={key}
-                  element={<ProtectedRoute _protected={route._protected} />}
-                >
-                  <Route path={route.path} element={<route.element />} />
-                </Route>
-              );
-            }
-          })}
+          {routes &&
+            routes.map((route: RouteType, key: number) => {
+              if (route._protected === -1) {
+                // means thes route is public, it doesn't bother if the user is logged in or not
+                return (
+                  <Route
+                    key={key}
+                    path={route.path}
+                    element={<route.element />}
+                  />
+                );
+              } else {
+                // means the route is protected, it will check if the user is logged in or not
+                return (
+                  <Route
+                    key={key}
+                    element={<ProtectedRoute _protected={route._protected} />}
+                  >
+                    <Route path={route.path} element={<route.element />} />
+                  </Route>
+                );
+              }
+            })}
         </Route>
         <Route path="*" element={<Error code={404} />} />
       </Routes>

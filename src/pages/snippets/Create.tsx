@@ -230,24 +230,26 @@ const Create = () => {
                 >
                   <option value="">Select a theme</option>
                   <optgroup label="Light">
-                    {themes.map(
-                      (theme: ThemeType, index: number) =>
-                        !theme.is_dark && (
-                          <option key={index} value={theme.value}>
-                            {theme.name}
-                          </option>
-                        )
-                    )}
+                    {themes &&
+                      themes.map(
+                        (theme: ThemeType, index: number) =>
+                          !theme.is_dark && (
+                            <option key={index} value={theme.value}>
+                              {theme.name}
+                            </option>
+                          )
+                      )}
                   </optgroup>
                   <optgroup label="Dark">
-                    {themes.map(
-                      (theme: ThemeType, index: number) =>
-                        theme.is_dark && (
-                          <option key={index} value={theme.value}>
-                            {theme.name}
-                          </option>
-                        )
-                    )}
+                    {themes &&
+                      themes.map(
+                        (theme: ThemeType, index: number) =>
+                          theme.is_dark && (
+                            <option key={index} value={theme.value}>
+                              {theme.name}
+                            </option>
+                          )
+                      )}
                   </optgroup>
                 </select>
               </div>
@@ -269,11 +271,16 @@ const Create = () => {
                   required
                 >
                   <option value="">Select a language</option>
-                  {languages.map((lang: LanguageType, index: number) => (
-                    <option key={index} value={lang.ext} data-mode={lang.mode}>
-                      {lang.name}
-                    </option>
-                  ))}
+                  {languages &&
+                    languages.map((lang: LanguageType, index: number) => (
+                      <option
+                        key={index}
+                        value={lang.ext}
+                        data-mode={lang.mode}
+                      >
+                        {lang.name}
+                      </option>
+                    ))}
                 </select>
               </div>
             </div>

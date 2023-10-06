@@ -151,32 +151,40 @@ const Home = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {snippets.map((snippet: SnippetType, index: number) => (
-                          <tr key={index} className="bg-gray-200 border-b-2 border-b-black">
-                            <td className="py-3 pl-4 font-semibold">
-                              {snippet.title}
-                            </td>
-                            <td className="py-3">{snippet.language}</td>
-                            <td className="py-3 text-center">{snippet.created_at}</td>
-                            <td className="py-3 px-4 space-x-4 flex justify-end text-sm">
-                              <Link
-                                to={`/p/${snippet.uid}/edit`}
-                                className="bg-black text-white px-2 py-1 rounded hover:bg-gray-600 transition duration-300 ease-in-out"
+                        {snippets &&
+                          snippets.map(
+                            (snippet: SnippetType, index: number) => (
+                              <tr
+                                key={index}
+                                className="bg-gray-200 border-b-2 border-b-black"
                               >
-                                Edit
-                              </Link>
-                              <button
-                                onClick={() => {
-                                  setIsModalOpen(true);
-                                  setDeleteSnippetId(snippet.uid);
-                                }}
-                                className="bg-red-600 text-white px-2 py-1 rounded hover:bg-red-700 transition duration-300 ease-in-out"
-                              >
-                                Delete
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
+                                <td className="py-3 pl-4 font-semibold">
+                                  {snippet.title}
+                                </td>
+                                <td className="py-3">{snippet.language}</td>
+                                <td className="py-3 text-center">
+                                  {snippet.created_at}
+                                </td>
+                                <td className="py-3 px-4 space-x-4 flex justify-end text-sm">
+                                  <Link
+                                    to={`/p/${snippet.uid}/edit`}
+                                    className="bg-black text-white px-2 py-1 rounded hover:bg-gray-600 transition duration-300 ease-in-out"
+                                  >
+                                    Edit
+                                  </Link>
+                                  <button
+                                    onClick={() => {
+                                      setIsModalOpen(true);
+                                      setDeleteSnippetId(snippet.uid);
+                                    }}
+                                    className="bg-red-600 text-white px-2 py-1 rounded hover:bg-red-700 transition duration-300 ease-in-out"
+                                  >
+                                    Delete
+                                  </button>
+                                </td>
+                              </tr>
+                            )
+                          )}
                       </tbody>
                     </table>
                   ) : (

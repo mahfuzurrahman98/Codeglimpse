@@ -43,14 +43,16 @@ export const Snippet = ({ snippet }: { snippet: _SnippetType }) => {
           </p>
 
           <div className="flex gap-x-2 flex-wrap">
-            {snippet.tags.map((tag, index) => (
-              <p
-                className="px-2 round bg-gray-200 text-black rounded-md"
-                key={index}
-              >
-                {tag}
-              </p>
-            ))}
+            {snippet &&
+              snippet.tags &&
+              snippet.tags.map((tag, index) => (
+                <p
+                  className="px-2 round bg-gray-200 text-black rounded-md"
+                  key={index}
+                >
+                  {tag}
+                </p>
+              ))}
           </div>
         </div>
         <AceEditor
@@ -124,9 +126,10 @@ const Home = () => {
             <SearchBox />
           </div>
 
-          {snippets.map((snippet: _SnippetType, index: number) => (
-            <Snippet snippet={snippet} key={index} />
-          ))}
+          {snippets &&
+            snippets.map((snippet: _SnippetType, index: number) => (
+              <Snippet snippet={snippet} key={index} />
+            ))}
 
           <div className="flex justify-center items-center mt-5">
             <Pagination
