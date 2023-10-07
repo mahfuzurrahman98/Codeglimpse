@@ -123,7 +123,7 @@ const Create = () => {
       });
 
       let message = response.data.data.message;
-      
+
       console.log(message);
       setFormData({
         ...formData,
@@ -354,7 +354,7 @@ const Create = () => {
             <button
               type="submit"
               className={`px-4 py-1 text-white rounded hover:bg-gray-600 ${
-                pending ? 'bg-gray-700' : 'bg-black '
+                pending || codeReviewPending ? 'bg-gray-700' : 'bg-black '
               }`}
               disabled={pending || codeReviewPending}
             >
