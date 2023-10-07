@@ -130,10 +130,7 @@ const Edit = () => {
       });
 
       let message = response.data.data.message;
-      // just keep the portion between ``` and ```
-      message = message.split('```')[1];
-      // remove the first line
-      message = message.split('\n').slice(1).join('\n');
+      
       console.log(message);
       setSnippet({
         ...snippet,
