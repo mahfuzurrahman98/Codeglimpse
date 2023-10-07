@@ -115,7 +115,6 @@ const Edit = () => {
   ) => {
     e.preventDefault();
     setCodeReviewPending(true);
-    setPending(true);
 
     // console.log(snippet.source_code);
     // return;
@@ -147,7 +146,6 @@ const Edit = () => {
       toast.error('Something went wrong, please try again later');
     } finally {
       setCodeReviewPending(false);
-      setPending(false);
     }
   };
 
@@ -411,7 +409,7 @@ const Edit = () => {
               className={`px-4 py-1 text-white rounded hover:bg-gray-600 ${
                 pending ? 'bg-gray-700' : 'bg-black '
               }`}
-              disabled={pending}
+              disabled={pending || codeReviewPending}
             >
               {pending ? (
                 <div className="flex items-center">
