@@ -108,6 +108,7 @@ const Create = () => {
   ) => {
     e.preventDefault();
     setCodeReviewPending(true);
+    setPending(true);
 
     console.log(formData.source_code);
     // return;
@@ -134,9 +135,11 @@ const Create = () => {
       toast.success('Code review successful');
     } catch (error: any) {
       console.log(error);
-      toast.error(error.response.data.detail);
+      // toast.error(error.response.data.detail);
+      toast.error('Something went wrong, please try again later');
     } finally {
       setCodeReviewPending(false);
+      setPending(false);
     }
   };
 

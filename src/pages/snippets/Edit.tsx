@@ -115,8 +115,9 @@ const Edit = () => {
   ) => {
     e.preventDefault();
     setCodeReviewPending(true);
+    setPending(true);
 
-    console.log(snippet.source_code);
+    // console.log(snippet.source_code);
     // return;
 
     try {
@@ -142,9 +143,11 @@ const Edit = () => {
       toast.success('Code review successful');
     } catch (error: any) {
       console.log(error);
-      toast.error(error.response.data.detail);
+      // toast.error(error.response.data.detail);
+      toast.error('Something went wrong, please try again later');
     } finally {
       setCodeReviewPending(false);
+      setPending(false);
     }
   };
 
