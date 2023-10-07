@@ -133,7 +133,15 @@ const Create = () => {
     } catch (error: any) {
       console.log(error);
       // toast.error(error.response.data.detail);
-      toast.error('Something went wrong, please try again later');
+      // toast.error('Something went wrong, please try again later');
+      // if error code is 500 then show internal server error and if 503 then show service unavailable
+      if (error.response.status === 500) {
+        toast.error('OpenAI: Internal server error');
+      } else if (error.response.status === 503) {
+        toast.error('OpenAI: Service unavailable');
+      } else {
+        toast.error('Something went wrong');
+      }
     } finally {
       setCodeReviewPending(false);
     }
