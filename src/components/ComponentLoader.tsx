@@ -11,7 +11,7 @@ const ComponentLoader = ({
   status: statusType;
   component: ReactNode;
 }) => {
-  console.log(status);
+  // console.log(status);
   return status.loading ? (
     <Loading />
   ) : status.error ? (
