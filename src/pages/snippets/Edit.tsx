@@ -129,7 +129,7 @@ const Edit = () => {
         source_code: '',
       });
       const API_URL = `${import.meta.env.VITE_API_URL}/snippets/code/review`;
-      // console.log(URL);
+      console.log(URL);
       const response = await fetchPrivate(API_URL, {
         method: 'POST',
         headers: {
