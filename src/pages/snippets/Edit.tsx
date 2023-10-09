@@ -128,20 +128,19 @@ const Edit = () => {
         ...snippet,
         source_code: '',
       });
-      const response = await fetchPrivate(
-        `${import.meta.env.VITE_API_URL}/snippets/code/review`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${auth.token}`,
-          },
-          body: JSON.stringify({
-            source_code: snippet.source_code,
-            language: _language,
-          }),
-        }
-      );
+      const API_URL = `${import.meta.env.VITE_API_URL}/snippets/code/review`;
+      console.log(URL);
+      const response = await fetchPrivate(API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${auth.token}`,
+        },
+        body: JSON.stringify({
+          source_code: snippet.source_code,
+          language: _language,
+        }),
+      });
 
       if (!response || !response.body) {
         console.error('Response or response body is null.');
@@ -216,8 +215,6 @@ const Edit = () => {
               },
             }}
           />
-
-          <code className="p-3 mb-5 border-2">{snippet.source_code}</code>
 
           <form onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 md:grid-cols-2 md:gap-x-5">
