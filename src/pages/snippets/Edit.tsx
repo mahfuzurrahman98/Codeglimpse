@@ -109,7 +109,7 @@ const Edit = () => {
       ) as LanguageType;
       setMode(selectedLanguage.mode);
 
-      console.log(selectedLanguage);
+      // console.log(selectedLanguage);
     }
   }, [snippet.language]);
 
@@ -129,7 +129,7 @@ const Edit = () => {
         source_code: '',
       });
       const API_URL = `${import.meta.env.VITE_API_URL}/snippets/code/review`;
-      console.log(URL);
+      // console.log(URL);
       const response = await fetchPrivate(API_URL, {
         method: 'POST',
         headers: {
@@ -159,7 +159,7 @@ const Edit = () => {
 
         // Convert the received Uint8Array to a string
         const stringValue = new TextDecoder().decode(value);
-        console.log(stringValue);
+        // console.log(stringValue);
 
         setSnippet((prevSnippet) => {
           return {
@@ -168,8 +168,14 @@ const Edit = () => {
           };
         });
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Fetch error:', error);
+      setCodeReviewPending(false);
+      if (error.response.status === 503) {
+        toast.error('OpenAI: service unavailable');
+      } else {
+        toast.error('OpenAI: something went wrong');
+      }
     } finally {
       setCodeReviewPending(false);
     }
