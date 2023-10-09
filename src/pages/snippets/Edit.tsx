@@ -59,7 +59,6 @@ const Edit = () => {
   const [codeReviewPending, setCodeReviewPending] = useState<boolean>(false);
   const [options] = useState<optionType[]>([]);
   const [defaultOptions] = useState<optionType[]>([]);
-  const [streamingDone, setStreamingDone] = useState(false);
 
   const uid = params.id;
 
@@ -130,7 +129,7 @@ const Edit = () => {
         source_code: '',
       });
       const response = await fetchPrivate(
-        'http://127.0.0.1:8000/api/v1/snippets/code/review',
+        `${import.meta.env.VITE_API_URL}/snippets/code/review`,
         {
           method: 'POST',
           headers: {
@@ -154,7 +153,6 @@ const Edit = () => {
       while (true) {
         const { done, value } = await reader.read();
         if (done) {
-          setStreamingDone(true);
           console.log('Stream complete.');
           setCodeReviewPending(false);
           break;
