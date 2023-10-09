@@ -16,7 +16,9 @@ import axios from '../../api/axios';
 import { Toaster, toast } from 'react-hot-toast';
 import { useParams } from 'react-router-dom';
 import ComponentLoader from '../../components/ComponentLoader';
+import useAuth from '../../hooks/useAuth';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import useFetchPrivate from '../../hooks/useFetchPrivate';
 import tags from '../../lib/data/tags';
 import {
   LanguageType,
@@ -31,7 +33,8 @@ const Edit = () => {
   // hooks
   const params = useParams();
   const axiosPrivate = useAxiosPrivate();
-
+  const { auth } = useAuth();
+  const fetchPrivate = useFetchPrivate();
   // init data
   const initialSnippet: formDataType = {
     title: '',
@@ -56,6 +59,7 @@ const Edit = () => {
   const [codeReviewPending, setCodeReviewPending] = useState<boolean>(false);
   const [options] = useState<optionType[]>([]);
   const [defaultOptions] = useState<optionType[]>([]);
+  const [streamingDone, setStreamingDone] = useState(false);
 
   const uid = params.id;
 
@@ -116,38 +120,59 @@ const Edit = () => {
     e.preventDefault();
     setCodeReviewPending(true);
 
-    // console.log(snippet.source_code);
-    // return;
+    const _language = languages.find(
+      (lang) => lang.ext === snippet.language
+    )?.name;
 
     try {
-      if (snippet.source_code === '') {
-        toast.error('Source code cannot be empty');
+      setSnippet({
+        ...snippet,
+        source_code: '',
+      });
+      const response = await fetchPrivate(
+        'http://127.0.0.1:8000/api/v1/snippets/code/review',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${auth.token}`,
+          },
+          body: JSON.stringify({
+            source_code: snippet.source_code,
+            language: _language,
+          }),
+        }
+      );
+
+      if (!response || !response.body) {
+        console.error('Response or response body is null.');
         return;
       }
 
-      const response = await axiosPrivate.post('/snippets/review', {
-        source_code: snippet.source_code,
-      });
+      const reader = response.body.getReader();
 
-      let message = response.data.data.message;
-      
-      console.log(message);
-      setSnippet({
-        ...snippet,
-        source_code: message,
-      });
-      toast.success('Code review successful');
-    } catch (error: any) {
-      console.log(error);
-      // toast.error(error.response.data.detail);
-      // toast.error('Something went wrong, please try again later');
-      if (error.response.status === 500) {
-        toast.error('OpenAI: Internal server error');
-      } else if (error.response.status === 503) {
-        toast.error('OpenAI: Service unavailable');
-      } else {
-        toast.error('Something went wrong');
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) {
+          setStreamingDone(true);
+          console.log('Stream complete.');
+          setCodeReviewPending(false);
+          break;
+        }
+
+        // Convert the received Uint8Array to a string
+        const stringValue = new TextDecoder().decode(value);
+        console.log(stringValue);
+
+        setSnippet((prevSnippet) => {
+          return {
+            ...prevSnippet,
+            source_code: prevSnippet.source_code + stringValue,
+          };
+        });
       }
+    } catch (error) {
+      console.error('Fetch error:', error);
     } finally {
       setCodeReviewPending(false);
     }
@@ -193,6 +218,8 @@ const Edit = () => {
               },
             }}
           />
+
+          <code className="p-3 mb-5 border-2">{snippet.source_code}</code>
 
           <form onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 md:grid-cols-2 md:gap-x-5">
@@ -352,7 +379,7 @@ const Edit = () => {
                 fontSize={18}
                 width="100%"
                 height="800px"
-                readOnly={codeReviewPending}
+                readOnly={false}
                 onChange={(value) =>
                   setSnippet({
                     ...snippet,
