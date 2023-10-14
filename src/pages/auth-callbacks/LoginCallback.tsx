@@ -51,7 +51,7 @@ const LoginCallback = () => {
       localStorage.setItem('picture', user.picture);
     } catch (error: any) {
       setErrMsg(error.message);
-      console.error(error);
+      throw new Error(error.message);
     }
   };
 
