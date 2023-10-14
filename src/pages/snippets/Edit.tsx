@@ -128,13 +128,13 @@ const Edit = () => {
         ...snippet,
         source_code: '',
       });
-      const API_URL = `${import.meta.env.VITE_API_URL}/snippets/code/review`;
-      console.log(URL);
+      const API_URL = `${import.meta.env.VITE_CODE_REVIEW_API_URL}/api/chat`;
+      // console.log(URL);
       const response = await fetchPrivate(API_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${auth.token}`,
+          Authorization: `Bearer ${auth.token+'d'}`,
         },
         body: JSON.stringify({
           source_code: snippet.source_code,
@@ -159,7 +159,7 @@ const Edit = () => {
 
         // Convert the received Uint8Array to a string
         const stringValue = new TextDecoder().decode(value);
-        // console.log(stringValue);
+        console.log(stringValue);
 
         setSnippet((prevSnippet) => {
           return {
