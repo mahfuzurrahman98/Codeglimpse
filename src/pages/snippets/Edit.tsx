@@ -59,6 +59,8 @@ const Edit = () => {
   const [codeReviewPending, setCodeReviewPending] = useState<boolean>(false);
   const [options] = useState<optionType[]>([]);
   const [defaultOptions] = useState<optionType[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [reviewCode, setReviewCode] = useState<string>('');
 
   const uid = params.id;
 
@@ -113,11 +115,39 @@ const Edit = () => {
     }
   }, [snippet.language]);
 
+  const acceptReviewdCode = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    let code = reviewCode;
+
+    const regex = /```[a-z]+\n([\s\S]*?)```/g;
+    const matches = regex.exec(code);
+    if (matches) {
+      code = matches[1];
+    }
+
+    setSnippet({
+      ...snippet,
+      source_code: code,
+    });
+
+    setIsModalOpen(false);
+  };
+
   const handleCodeReview = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
+
+    if (snippet.source_code.trim() === '') {
+      toast.error('Source code cannot be empty');
+      return;
+    }
+
     setCodeReviewPending(true);
+
+    setIsModalOpen(true);
 
     const _language = languages.find(
       (lang) => lang.ext === snippet.language
@@ -134,7 +164,7 @@ const Edit = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${auth.token+'d'}`,
+          Authorization: `Bearer ${auth.token + 'd'}`,
         },
         body: JSON.stringify({
           source_code: snippet.source_code,
@@ -161,12 +191,14 @@ const Edit = () => {
         const stringValue = new TextDecoder().decode(value);
         console.log(stringValue);
 
-        setSnippet((prevSnippet) => {
-          return {
-            ...prevSnippet,
-            source_code: prevSnippet.source_code + stringValue,
-          };
-        });
+        // setSnippet((prevSnippet) => {
+        //   return {
+        //     ...prevSnippet,
+        //     source_code: prevSnippet.source_code + stringValue,
+        //   };
+        // });
+
+        setReviewCode((prevCode) => prevCode + stringValue);
       }
     } catch (error: any) {
       console.error('Fetch error:', error);
@@ -204,6 +236,44 @@ const Edit = () => {
       status={status}
       component={
         <SnippetLayout>
+          {isModalOpen && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm px-3">
+              <div className="bg-white max-w-4xl w-full p-6 rounded-lg shadow-2xl">
+                <div className="border-b mb-5">
+                  <h2 className="text-xl font-bold mb-4">Code review</h2>
+                </div>
+                {/* hide the line numbers */}
+                <AceEditor
+                  className="font-fira-code"
+                  value={reviewCode}
+                  mode={mode}
+                  theme="github"
+                  fontSize={14}
+                  width="100%"
+                  height="80vh"
+                  readOnly={true}
+                  showGutter={false}
+                />
+
+                {!codeReviewPending && (
+                  <div className="flex justify-end gap-x-3">
+                    <button
+                      className="px-4 py-1 text-white rounded hover:bg-gray-600 bg-black mt-5"
+                      onClick={acceptReviewdCode}
+                    >
+                      Accept
+                    </button>
+                    <button
+                      className="px-4 py-1 text-white rounded hover:bg-red-500 bg-red-600 mt-5 ml-3"
+                      onClick={() => setIsModalOpen(false)}
+                    >
+                      Reject
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
           <div className="flex justify-between items-start mb-5 border-b-4 border-gray-700">
             <h1 className="text-2xl font-bold mb-4">Edit Snippet</h1>
           </div>
