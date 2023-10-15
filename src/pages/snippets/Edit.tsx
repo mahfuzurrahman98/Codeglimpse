@@ -269,7 +269,7 @@ const Edit = () => {
                   theme="github"
                   fontSize={14}
                   width="100%"
-                  height="80vh"
+                  height="70vh"
                   readOnly={true}
                   showGutter={false}
                 />
