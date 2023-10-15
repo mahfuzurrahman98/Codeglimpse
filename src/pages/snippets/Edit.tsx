@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import CreateableReactSelect from 'react-select/creatable';
 import ai_icon from '../../assets/ai.png';
+import LoadingDots from '../../assets/dots.gif';
 import LoadingGIF from '../../assets/loading.gif';
 
 import AceEditor from 'react-ace';
@@ -18,7 +19,6 @@ import { useParams } from 'react-router-dom';
 import ComponentLoader from '../../components/ComponentLoader';
 import useAuth from '../../hooks/useAuth';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
-import useFetchPrivate from '../../hooks/useFetchPrivate';
 import tags from '../../lib/data/tags';
 import {
   LanguageType,
@@ -34,7 +34,6 @@ const Edit = () => {
   const params = useParams();
   const axiosPrivate = useAxiosPrivate();
   const { auth } = useAuth();
-  const fetchPrivate = useFetchPrivate();
   // init data
   const initialSnippet: formDataType = {
     title: '',
@@ -61,6 +60,8 @@ const Edit = () => {
   const [defaultOptions] = useState<optionType[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [reviewCode, setReviewCode] = useState<string>('');
+
+  const abortController = useRef<AbortController | null>(null);
 
   const uid = params.id;
 
@@ -110,8 +111,6 @@ const Edit = () => {
         (lang) => lang.ext === snippet.language
       ) as LanguageType;
       setMode(selectedLanguage.mode);
-
-      // console.log(selectedLanguage);
     }
   }, [snippet.language]);
 
@@ -135,6 +134,21 @@ const Edit = () => {
     setIsModalOpen(false);
   };
 
+  const cancelCodeReview = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+
+    abortController.current?.abort();
+
+    abortController.current = null;
+    setIsModalOpen(false);
+    setCodeReviewPending(false);
+    setReviewCode('');
+
+    toast.error('Code review cancelled');
+  };
+
   const handleCodeReview = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -156,9 +170,12 @@ const Edit = () => {
     )?.name;
 
     try {
+      if (!abortController.current) {
+        abortController.current = new AbortController();
+      }
       const API_URL = `${import.meta.env.VITE_CODE_REVIEW_API_URL}/api/chat`;
       // console.log(URL);
-      const response = await fetchPrivate(API_URL, {
+      const response = await fetch(API_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -168,6 +185,7 @@ const Edit = () => {
           source_code: snippet.source_code,
           language: _language,
         }),
+        signal: abortController.current.signal,
       });
 
       if (!response || !response.body) {
@@ -194,10 +212,14 @@ const Edit = () => {
     } catch (error: any) {
       console.error('Fetch error:', error);
       setCodeReviewPending(false);
-      if (error.response.status === 503) {
-        toast.error('OpenAI: service unavailable');
+      if (error.name === 'AbortError') {
+        console.log('Fetch aborted.');
       } else {
-        toast.error('OpenAI: something went wrong');
+        if (error.response.status === 503) {
+          toast.error('OpenAI: service unavailable');
+        } else {
+          toast.error('OpenAI: something went wrong');
+        }
       }
     } finally {
       setCodeReviewPending(false);
@@ -232,8 +254,14 @@ const Edit = () => {
               <div className="bg-white max-w-4xl w-full p-6 rounded-lg shadow-2xl">
                 <div className="border-b mb-5">
                   <h2 className="text-xl font-bold mb-4">Code review</h2>
+                  {reviewCode === '' && (
+                    <div className="flex items-center ">
+                      Hold your seat tight, the Super Coder is reading your code
+                      <img src={LoadingDots} alt="Loading" className="w-16 " />
+                    </div>
+                  )}
                 </div>
-                {/* hide the line numbers */}
+
                 <AceEditor
                   className="font-fira-code"
                   value={reviewCode}
@@ -246,7 +274,7 @@ const Edit = () => {
                   showGutter={false}
                 />
 
-                {!codeReviewPending && (
+                {!codeReviewPending ? (
                   <div className="flex justify-end gap-x-3">
                     <button
                       className="px-4 py-1 text-white rounded hover:bg-gray-600 bg-black mt-5"
@@ -259,6 +287,15 @@ const Edit = () => {
                       onClick={() => setIsModalOpen(false)}
                     >
                       Reject
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex justify-end gap-x-3">
+                    <button
+                      className="px-4 py-1 text-white rounded hover:bg-red-500 bg-red-600 mt-5 ml-3"
+                      onClick={cancelCodeReview}
+                    >
+                      Cancel
                     </button>
                   </div>
                 )}

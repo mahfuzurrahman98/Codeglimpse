@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
 import CreateableReactSelect from 'react-select/creatable';
 import ai_icon from '../../assets/ai.png';
+import LoadingDots from '../../assets/dots.gif';
 import LoadingGIF from '../../assets/loading.gif';
 
 import AceEditor from 'react-ace';
@@ -18,14 +19,12 @@ import SnippetLayout from './SnippetLayout';
 
 import { useNavigate } from 'react-router-dom';
 import ComponentLoader from '../../components/ComponentLoader';
-import useFetchPrivate from '../../hooks/useFetchPrivate';
 import tags from '../../lib/data/tags';
 import { LanguageType, ThemeType, formDataType, statusType } from '../../types';
 
 const Create = () => {
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
-  const fetchPrivate = useFetchPrivate();
 
   const options: { value: string; label: string }[] = [];
   tags.forEach((tag: string) => {
@@ -56,6 +55,8 @@ const Create = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [reviewCode, setReviewCode] = useState<string>('');
 
+  const abortController = useRef<AbortController | null>(null);
+
   useEffect(() => {
     (async () => {
       try {
@@ -85,6 +86,21 @@ const Create = () => {
     console.log(mode);
   }, [formData.language]);
 
+  const cancelCodeReview = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+
+    abortController.current?.abort();
+
+    abortController.current = null;
+    setIsModalOpen(false);
+    setCodeReviewPending(false);
+    setReviewCode('');
+
+    toast.error('Code review cancelled');
+  };
+
   const acceptReviewdCode = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -109,6 +125,7 @@ const Create = () => {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
+    
 
     if (formData.source_code.trim() === '') {
       toast.error('Source code cannot be empty');
@@ -126,9 +143,13 @@ const Create = () => {
     )?.name;
 
     try {
+      if (!abortController.current) {
+        abortController.current = new AbortController();
+      }
+
       const API_URL = `${import.meta.env.VITE_CODE_REVIEW_API_URL}/api/chat`;
       // console.log(URL);
-      const response = await fetchPrivate(API_URL, {
+      const response = await fetch(API_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -137,6 +158,7 @@ const Create = () => {
           source_code: formData.source_code,
           language: _language,
         }),
+        signal: abortController.current.signal,
       });
 
       if (!response || !response.body) {
@@ -156,14 +178,6 @@ const Create = () => {
 
         // Convert the received Uint8Array to a string
         const stringValue = new TextDecoder().decode(value);
-        console.log(stringValue);
-
-        // setSnippet((prevSnippet) => {
-        //   return {
-        //     ...prevSnippet,
-        //     source_code: prevSnippet.source_code + stringValue,
-        //   };
-        // });
 
         setReviewCode((prevCode) => prevCode + stringValue);
       }
@@ -212,8 +226,14 @@ const Create = () => {
               <div className="bg-white max-w-4xl w-full p-6 rounded-lg shadow-2xl">
                 <div className="border-b mb-5">
                   <h2 className="text-xl font-bold mb-4">Code review</h2>
+                  {reviewCode === '' && (
+                    <div className="flex items-center ">
+                      Hold your seat tight, the Super Coder is reading your code
+                      <img src={LoadingDots} alt="Loading" className="w-16 " />
+                    </div>
+                  )}
                 </div>
-                {/* hide the line numbers */}
+
                 <AceEditor
                   className="font-fira-code"
                   value={reviewCode}
@@ -226,7 +246,7 @@ const Create = () => {
                   showGutter={false}
                 />
 
-                {!codeReviewPending && (
+{!codeReviewPending ? (
                   <div className="flex justify-end gap-x-3">
                     <button
                       className="px-4 py-1 text-white rounded hover:bg-gray-600 bg-black mt-5"
@@ -239,6 +259,15 @@ const Create = () => {
                       onClick={() => setIsModalOpen(false)}
                     >
                       Reject
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex justify-end gap-x-3">
+                    <button
+                      className="px-4 py-1 text-white rounded hover:bg-red-500 bg-red-600 mt-5 ml-3"
+                      onClick={cancelCodeReview}
+                    >
+                      Cancel
                     </button>
                   </div>
                 )}
