@@ -180,10 +180,10 @@ const Show = () => {
                       <span className="text-gray-700">{snippet.owner}</span>
                     </p>
                   </div>
-                  <p className="text-black mb-4">
-                    <span className="font-semibold">Tags:</span>
-                    {snippet.tags &&
-                      snippet.tags.map((tag: string) => (
+                  {snippet.tags && (
+                    <p className="text-black mb-4">
+                      <span className="font-semibold">Tags:</span>
+                      {snippet.tags.map((tag: string) => (
                         <span
                           key={tag}
                           className="px-2 py-[.15rem] bg-gray-300 text-gray-800 rounded-md ml-2"
@@ -191,7 +191,8 @@ const Show = () => {
                           {tag}
                         </span>
                       ))}
-                  </p>
+                    </p>
+                  )}
                 </div>
               </div>
               <div className="flex justify-between items-center bg-gray-700 py-1 px-3 rounded-t-md">
