@@ -147,6 +147,8 @@ const Edit = () => {
 
     setCodeReviewPending(true);
 
+    setReviewCode('');
+
     setIsModalOpen(true);
 
     const _language = languages.find(
@@ -154,10 +156,6 @@ const Edit = () => {
     )?.name;
 
     try {
-      setSnippet({
-        ...snippet,
-        source_code: '',
-      });
       const API_URL = `${import.meta.env.VITE_CODE_REVIEW_API_URL}/api/chat`;
       // console.log(URL);
       const response = await fetchPrivate(API_URL, {
@@ -190,13 +188,6 @@ const Edit = () => {
         // Convert the received Uint8Array to a string
         const stringValue = new TextDecoder().decode(value);
         console.log(stringValue);
-
-        // setSnippet((prevSnippet) => {
-        //   return {
-        //     ...prevSnippet,
-        //     source_code: prevSnippet.source_code + stringValue,
-        //   };
-        // });
 
         setReviewCode((prevCode) => prevCode + stringValue);
       }

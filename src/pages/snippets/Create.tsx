@@ -18,12 +18,14 @@ import SnippetLayout from './SnippetLayout';
 
 import { useNavigate } from 'react-router-dom';
 import ComponentLoader from '../../components/ComponentLoader';
+import useFetchPrivate from '../../hooks/useFetchPrivate';
 import tags from '../../lib/data/tags';
 import { LanguageType, ThemeType, formDataType, statusType } from '../../types';
 
 const Create = () => {
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
+  const fetchPrivate = useFetchPrivate();
 
   const options: { value: string; label: string }[] = [];
   tags.forEach((tag: string) => {
@@ -51,6 +53,8 @@ const Create = () => {
     loading: true,
     error: null,
   });
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [reviewCode, setReviewCode] = useState<string>('');
 
   useEffect(() => {
     (async () => {
@@ -81,6 +85,101 @@ const Create = () => {
     console.log(mode);
   }, [formData.language]);
 
+  const acceptReviewdCode = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    let code = reviewCode;
+
+    const regex = /```[a-z]+\n([\s\S]*?)```/g;
+    const matches = regex.exec(code);
+    if (matches) {
+      code = matches[1];
+    }
+
+    setFormData({
+      ...formData,
+      source_code: code,
+    });
+
+    setIsModalOpen(false);
+  };
+
+  const handleCodeReview = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+
+    if (formData.source_code.trim() === '') {
+      toast.error('Source code cannot be empty');
+      return;
+    }
+
+    setCodeReviewPending(true);
+
+    setReviewCode('');
+
+    setIsModalOpen(true);
+
+    const _language = languages.find(
+      (lang) => lang.ext === formData.language
+    )?.name;
+
+    try {
+      const API_URL = `${import.meta.env.VITE_CODE_REVIEW_API_URL}/api/chat`;
+      // console.log(URL);
+      const response = await fetchPrivate(API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          source_code: formData.source_code,
+          language: _language,
+        }),
+      });
+
+      if (!response || !response.body) {
+        console.error('Response or response body is null.');
+        return;
+      }
+
+      const reader = response.body.getReader();
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) {
+          console.log('Stream complete.');
+          setCodeReviewPending(false);
+          break;
+        }
+
+        // Convert the received Uint8Array to a string
+        const stringValue = new TextDecoder().decode(value);
+        console.log(stringValue);
+
+        // setSnippet((prevSnippet) => {
+        //   return {
+        //     ...prevSnippet,
+        //     source_code: prevSnippet.source_code + stringValue,
+        //   };
+        // });
+
+        setReviewCode((prevCode) => prevCode + stringValue);
+      }
+    } catch (error: any) {
+      console.error('Fetch error:', error);
+      setCodeReviewPending(false);
+      if (error.response.status === 503) {
+        toast.error('OpenAI: service unavailable');
+      } else {
+        toast.error('OpenAI: something went wrong');
+      }
+    } finally {
+      setCodeReviewPending(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setPending(true);
@@ -103,55 +202,49 @@ const Create = () => {
     }
   };
 
-  const handleCodeReview = async (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    e.preventDefault();
-    setCodeReviewPending(true);
-
-    // console.log(formData.source_code);
-    // return;
-
-    try {
-      if (formData.source_code === '') {
-        toast.error('Source code cannot be empty');
-        return;
-      }
-
-      const response = await axiosPrivate.post('/snippets/review', {
-        source_code: formData.source_code,
-      });
-
-      let message = response.data.data.message;
-
-      console.log(message);
-      setFormData({
-        ...formData,
-        source_code: message,
-      });
-      toast.success('Code review successful');
-    } catch (error: any) {
-      console.log(error);
-      // toast.error(error.response.data.detail);
-      // toast.error('Something went wrong, please try again later');
-      // if error code is 500 then show internal server error and if 503 then show service unavailable
-      if (error.response.status === 500) {
-        toast.error('OpenAI: Internal server error');
-      } else if (error.response.status === 503) {
-        toast.error('OpenAI: Service unavailable');
-      } else {
-        toast.error('Something went wrong');
-      }
-    } finally {
-      setCodeReviewPending(false);
-    }
-  };
-
   return (
     <ComponentLoader
       status={status}
       component={
         <SnippetLayout>
+          {isModalOpen && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm px-3">
+              <div className="bg-white max-w-4xl w-full p-6 rounded-lg shadow-2xl">
+                <div className="border-b mb-5">
+                  <h2 className="text-xl font-bold mb-4">Code review</h2>
+                </div>
+                {/* hide the line numbers */}
+                <AceEditor
+                  className="font-fira-code"
+                  value={reviewCode}
+                  mode={mode}
+                  theme="github"
+                  fontSize={14}
+                  width="100%"
+                  height="80vh"
+                  readOnly={true}
+                  showGutter={false}
+                />
+
+                {!codeReviewPending && (
+                  <div className="flex justify-end gap-x-3">
+                    <button
+                      className="px-4 py-1 text-white rounded hover:bg-gray-600 bg-black mt-5"
+                      onClick={acceptReviewdCode}
+                    >
+                      Accept
+                    </button>
+                    <button
+                      className="px-4 py-1 text-white rounded hover:bg-red-500 bg-red-600 mt-5 ml-3"
+                      onClick={() => setIsModalOpen(false)}
+                    >
+                      Reject
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
           <div className="flex justify-between items-start mb-5 border-b-4 border-gray-700">
             <h1 className="text-2xl font-bold mb-4">Create a Snippet</h1>
           </div>
