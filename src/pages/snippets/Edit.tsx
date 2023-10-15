@@ -82,10 +82,12 @@ const Edit = () => {
         let _snippet = response3.data.data.snippet;
         delete _snippet.uid;
 
-        _snippet.tags.forEach((tag: string) => {
-          options.push({ value: tag, label: tag });
-          defaultOptions.push({ value: tag, label: tag });
-        });
+        if (_snippet.tags) {
+          _snippet.tags.forEach((tag: string) => {
+            options.push({ value: tag, label: tag });
+            defaultOptions.push({ value: tag, label: tag });
+          });
+        }
 
         setMode(_snippet.mode);
         delete _snippet.mode;
