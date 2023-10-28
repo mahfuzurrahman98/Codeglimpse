@@ -228,7 +228,7 @@ const Create = () => {
                   <h2 className="text-xl font-bold mb-4">Code review</h2>
                   {reviewCode === '' && (
                     <div className="flex items-center ">
-                      Hold your seat tight, the Super Coder is reading your code
+                      Hold your seat tight, our code assistant is reading your code
                       <img src={LoadingDots} alt="Loading" className="w-16 " />
                     </div>
                   )}
@@ -246,7 +246,7 @@ const Create = () => {
                   showGutter={false}
                 />
 
-{!codeReviewPending ? (
+                {!codeReviewPending ? (
                   <div className="flex justify-end gap-x-3">
                     <button
                       className="px-4 py-1 text-white rounded hover:bg-gray-600 bg-black mt-5"
