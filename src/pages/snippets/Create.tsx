@@ -147,7 +147,7 @@ const Create = () => {
         abortController.current = new AbortController();
       }
 
-      const API_URL = `${import.meta.env.VITE_CODE_REVIEW_API_URL}/api/chat`;
+      const API_URL = `${import.meta.env.VITE_CODE_REVIEW_API_URL}/code-review`;
       // console.log(URL);
       const response = await fetch(API_URL, {
         method: 'POST',
